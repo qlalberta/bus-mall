@@ -15,6 +15,7 @@ As the participants, they'd like to
 * browse appropriate amount of images every time (MVP)
 * does not want to see duplicate images at the same time or just showed before (MVP)
 * checkout if the products they choose is popular (MVP)
+* know how much time you need to spend to finish the survey(MVP)
 * has the option to checkout more details for the products (stretch goal)
 * has the option to watch a video about the product (stretch goal)
 
@@ -34,6 +35,7 @@ As the developer, I'd like to
 ### Technical Requirement
 #### MVP
 * images of proposed products
+* information about the game time
 * game logic: 20 images shown in 25 times with 3 images showing side by side each times, and the user click the product they like.
 * each click is counted and stored. each time an image showed is counted and stored.
 * after the 25 selection, display the click times of the same image, the times an image shown and the ratio of the times that an item was clicked out of the total number of clicks
@@ -43,3 +45,9 @@ As the developer, I'd like to
   - number of times shown
   - number of times clicked
   - image id
+
+#### stretch goals
+* click for more details linking to other pages
+* edit the picture to the same size
+* add css to style the interface
+* display a graph
