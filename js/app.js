@@ -1,6 +1,5 @@
 'use strict';
 
-
 // create function objects
 function Product (name, imageID, imageFilePath) {
   this.name = name;
@@ -38,28 +37,71 @@ var wineGlass = new Product('wine-glass.jpg', 20, 'img/assets/wine-glass.jpg');
 var imageName =
 [bag.name, banana.name, bathroom.name, boots.name, breakfast.name, bubblegum.name, chair.name, cthulhu.name, dogDuck.name, dragon.name, pen.name, petSweep.name, scissors.name, shark.name, sweep.name, tauntaun.name, unicorn.name, usb.name, waterCan.name, wineGlass.name];
 
-// var imageFilePath =
-// [bag.imageFilePath, banana.imageFilePath, bathroom.imageFilePath, boots.imageFilePath, breakfast.imageFilePath,bubblegum.imageFilePath, chair.name, cthulhu.name, dogDuck.name, dragon.imageFilePath, pen.imageFilePath, petSweep.imageFilePath, scissors.imageFilePath, shark.imageFilePath, sweep.imageFilePath, tauntaun.imageFilePath, unicorn.imageFilePath, usb.imageFilePath, waterCan.imageFilePath, wineGlass.imageFilePath];
-
-//get the node to attach the new display results
-
-var productNameParent = document.getElementById('productName');
-var productImagesParent = document.getElementById('productImages');
-// var datasetParent = document.getElementById('dataset');
 
 //generate the three product names
+//need to check duplicates
+//need to run 25 times
+
 var randomImagePathList = [];
 var randomProductNameList = [];
-var index;
-var k = 0;
+var indexList = [];
+
 function generateRandomNumber () {
   index = Math.floor(Math.random() * 20);
 }
 
-for(var i = 0; i < 3; i ++) {
+//generate indexList
+function generateRandomIndexList () {
+  for(var k = 0; k < 3; k++) {
+    generateRandomNumber();
+    indexList[k] = index;
+  }
+}
+generateRandomIndexList ();
+console.log(indexList);
+
+// remove duplicates and sorted into an oreder list
+// the original code is from stackoverflow
+https://stackoverflow.com/questions/840781/easiest-way-to-find-duplicate-values-in-a-javascript-array
+
+function removeDuplicates(array1) {
+  var len1 = array1.length,
+    out = [],
+    obj = {};
+  for (var n = 0; n < len1; n++) {
+    obj[array1[n]] = 0;
+  }
+  for (n in obj) {
+    out.push(n);
+  }
+  return out;
+}
+
+// indexList = removeDuplicates(indexList);
+// console.log(indexList);
+
+//shuffle the array
+//the original code is from the link below.
+http://www.w3resource.com/javascript-exercises/javascript-array-exercise-17.php
+
+function shuffle(array2) {
+  var len2 = array2.length, temp, index2;
+  while (len2 > 0) {
+    index2 = Math.floor(Math.random() * len2);
+    len2--;
+    temp = array2[len2];
+    array2[len2] = array2[index2];
+    array2[index2] = temp;
+  }
+  return array2;
+}
+
+for (var i = 0; i < 3; i ++) {
   generateRandomNumber();
-  randomImagePathList[i] = imageName[index];
-  randomProductNameList[i] = imageName[index].slice(0,imageName[index].length - 4);
+  removeDuplicates(indexList);
+
+  randomImagePathList[i] = imageName[indexList[i]];
+  randomProductNameList[i] = imageName[index].slice(0,imageName[indexList[i]].length - 4);
 }
 //TODO: no duplicate numbers
   // if (randomProductNameList.indexOf(index) > 0)
@@ -67,8 +109,15 @@ for(var i = 0; i < 3; i ++) {
 
 console.log(randomProductNameList);
 
+//get the node to attach the new display results
+
+var productNameParent = document.getElementById('productName');
+var productImagesParent = document.getElementById('productImages');
+// var datasetParent = document.getElementById('dataset');
+
 //display
 //render
+
 function renderProduct () {
   for(var j = 0; j < 3; j ++) {
     var h3 = document.createElement('h3');
