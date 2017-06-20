@@ -37,6 +37,8 @@ var wineGlass = new Product('wine-glass.jpg', 20, 'img/assets/wine-glass.jpg');
 var imageName =
 [bag.name, banana.name, bathroom.name, boots.name, breakfast.name, bubblegum.name, chair.name, cthulhu.name, dogDuck.name, dragon.name, pen.name, petSweep.name, scissors.name, shark.name, sweep.name, tauntaun.name, unicorn.name, usb.name, waterCan.name, wineGlass.name];
 
+var imageID =
+[bag.imageID, banana.imageID, bathroom.imageID, boots.imageID, breakfast.imageID, bubblegum.imageID, chair.imageID, cthulhu.imageID, dogDuck.imageID, dragon.imageID, pen.imageID, petSweep.imageID, scissors.imageID, shark.imageID, sweep.imageID, tauntaun.imageID, unicorn.imageID, usb.imageID, waterCan.imageID, wineGlass.imageID];
 
 //generate the three product names
 //need to check duplicates
@@ -46,95 +48,65 @@ var randomImagePathList = [];
 var randomProductNameList = [];
 var indexList = [];
 
-function generateRandomNumber () {
-  index = Math.floor(Math.random() * 20);
+//generate 3 random numbers (between 1 to 20) without duplicates for 25 times
+//the original code is from the link below
+https://stackoverflow.com/questions/3796786/random-number-generator-without-dupes-in-javascript
+// var nums = imageID;
+var gen_nums = [];
+function in_array(array, el) {
+  for (var k = 0 ; k < array.length; k++)
+    if(array[k] == el) {
+      return true;}
+    else {
+      return false;}
 }
 
-//generate indexList
-function generateRandomIndexList () {
-  for(var k = 0; k < 3; k++) {
-    generateRandomNumber();
-    indexList[k] = index;
+function generate_rand(array) {
+  var rand = array[Math.floor(Math.random() * imageID.length)];
+  if(!in_array(gen_nums, rand)) {
+    gen_nums.push(rand);
+    return rand;
   }
+  return generate_rand(array);
 }
-generateRandomIndexList ();
+// var r = 24;
+// while (r > 0) {
+  for (var i = 0; i < 3; i++) {
+    indexList.push(generate_rand(imageID));
+  }
+//   r--;
+// }
+
 console.log(indexList);
 
-// remove duplicates and sorted into an oreder list
-// the original code is from stackoverflow
-https://stackoverflow.com/questions/840781/easiest-way-to-find-duplicate-values-in-a-javascript-array
-
-function removeDuplicates(array1) {
-  var len1 = array1.length,
-    out = [],
-    obj = {};
-  for (var n = 0; n < len1; n++) {
-    obj[array1[n]] = 0;
-  }
-  for (n in obj) {
-    out.push(n);
-  }
-  return out;
+for (var j = 0; j < 3; j ++) {
+  randomImagePathList[j] = imageName[indexList[j]];
+  randomProductNameList[j] = imageName[indexList[j]].slice(0,imageName[indexList[j]].length - 4);
 }
-
-// indexList = removeDuplicates(indexList);
-// console.log(indexList);
-
-//shuffle the array
-//the original code is from the link below.
-http://www.w3resource.com/javascript-exercises/javascript-array-exercise-17.php
-
-function shuffle(array2) {
-  var len2 = array2.length, temp, index2;
-  while (len2 > 0) {
-    index2 = Math.floor(Math.random() * len2);
-    len2--;
-    temp = array2[len2];
-    array2[len2] = array2[index2];
-    array2[index2] = temp;
-  }
-  return array2;
-}
-
-for (var i = 0; i < 3; i ++) {
-  generateRandomNumber();
-  removeDuplicates(indexList);
-
-  randomImagePathList[i] = imageName[indexList[i]];
-  randomProductNameList[i] = imageName[index].slice(0,imageName[indexList[i]].length - 4);
-}
-//TODO: no duplicate numbers
-  // if (randomProductNameList.indexOf(index) > 0)
-  // { randomProductNameList[i+1]}
-
-console.log(randomProductNameList);
 
 //get the node to attach the new display results
-
 var productNameParent = document.getElementById('productName');
 var productImagesParent = document.getElementById('productImages');
 // var datasetParent = document.getElementById('dataset');
 
-//display
-//render
-
+//render product names and images
 function renderProduct () {
-  for(var j = 0; j < 3; j ++) {
+  for(var k = 0; k < 3; k ++) {
     var h3 = document.createElement('h3');
-    h3.textContent = randomProductNameList[j];
+    h3.textContent = randomProductNameList[k];
     productNameParent.append(h3);
     var img = document.createElement('img');
-    img.setAttribute('src', 'img/assets/' + randomImagePathList[j])
-    img.setAttribute('id', randomProductNameList[j]);
+    img.setAttribute('src', 'img/assets/' + randomImagePathList[k]);
+    img.setAttribute('id', randomProductNameList[k]);
     productImagesParent.append(img);
   }
 }
 renderProduct();
 
 // click
-productImagesParent.addEventListener('click', function (event) {
-  var answer = event.target.getAttribute('id');
-  return
-});
+// productImagesParent.addEventListener('click', function (event) {
+//   var answer = event.target.getAttribute('id');
+//
+// });
 
 // dataset
