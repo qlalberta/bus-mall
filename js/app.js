@@ -69,13 +69,10 @@ function generate_rand(array) {
   }
   return generate_rand(array);
 }
-// var r = 24;
-// while (r > 0) {
-  for (var i = 0; i < 3; i++) {
-    indexList.push(generate_rand(imageID));
-  }
-//   r--;
-// }
+
+for (var i = 0; i < 3; i++) {
+  indexList.push(generate_rand(imageID));
+}
 
 console.log(indexList);
 
