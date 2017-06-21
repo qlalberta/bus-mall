@@ -38,8 +38,8 @@ var wineGlass = new Product('wine-glass.jpg', 20, 'img/assets/wine-glass.jpg');
 var imageName =
 [bag.name, banana.name, bathroom.name, boots.name, breakfast.name, bubblegum.name, chair.name, cthulhu.name, dogDuck.name, dragon.name, pen.name, petSweep.name, scissors.name, shark.name, sweep.name, tauntaun.name, unicorn.name, usb.name, waterCan.name, wineGlass.name];
 
-var imageID =
-[bag.imageID, banana.imageID, bathroom.imageID, boots.imageID, breakfast.imageID, bubblegum.imageID, chair.imageID, cthulhu.imageID, dogDuck.imageID, dragon.imageID, pen.imageID, petSweep.imageID, scissors.imageID, shark.imageID, sweep.imageID, tauntaun.imageID, unicorn.imageID, usb.imageID, waterCan.imageID, wineGlass.imageID];
+// var imageID =
+// [bag.imageID, banana.imageID, bathroom.imageID, boots.imageID, breakfast.imageID, bubblegum.imageID, chair.imageID, cthulhu.imageID, dogDuck.imageID, dragon.imageID, pen.imageID, petSweep.imageID, scissors.imageID, shark.imageID, sweep.imageID, tauntaun.imageID, unicorn.imageID, usb.imageID, waterCan.imageID, wineGlass.imageID];
 
 //generate the three product names
 //need to check duplicates
@@ -92,6 +92,7 @@ function generateRandomProduct () {
     randomImagePathList[j] = imageName[indexList[j]];
     randomProductNameList[j] = imageName[indexList[j]].slice(0,imageName[indexList[j]].length - 4);
   }
+  // console.log('95rrandomProductNameList ' + randomProductNameList );
 }
 // generateRandomProduct();
 
@@ -129,10 +130,24 @@ function renderProduct () {
 //    img.setAttribute('src', 'img/assets/' + randomImagePathList[T]);
 //    img.setAttribute('id', randomProductNameList[T]);
 // }
+// generateRandomProductID();
+// generateRandomProduct();
+
+// renderProduct();
 generateRandomProductID();
-console.log(indexList);
 generateRandomProduct();
+
+
+var randomProductShownList = [];
+
+function shownTime () {
+  randomProductShownList = randomProductShownList.concat(randomProductNameList);
+  // console.log('145randomProductShownList ' + randomProductShownList);
+};
+
+shownTime();
 renderProduct();
+
 // updateProduct();
 // click
 productImagesParent.addEventListener('click', function (event) {
@@ -155,12 +170,65 @@ productImagesParent.addEventListener('click', function (event) {
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
-  // updateProduct;
+  shownTime();
+});
+
+console.log('175randomProductNameList ' + randomProductNameList);
+console.log('176randomProductShownList ' + randomProductShownList);
+
+
+// count the click times
+// var count = new Array(20).fill(0);
+//  for (var o = 0; o < randomProductShownList.length; o++);
+//   { if (imageName[0] == randomProductShownList[o])
+//         count[0]++;
+//      if (imageName[1] == randomProductShownList[o])
+//       count[1]++;
+//      if (imageName[2] == randomProductShownList[o])
+//         count[2]++;
+//      if (imageName[3] == randomProductShownList[o])
+//         count[3]++;
+//      if (imageName[4] == randomProductShownList[o])
+//         count[4]++;
+//      if (imageName[5] == randomProductShownList[o])
+//         count[5]++;
+//      if (imageName[6] == randomProductShownList[o])
+//         count[6]++;
+//      if (imageName[7] == randomProductShownList[o])
+//         count[7]++;
+//      if (imageName[8] == randomProductShownList[o])
+//         count[8]++;
+//      if (imageName[9] == randomProductShownList[o])
+//         count[9]++;
+//      if (imageName[10] == randomProductShownList[o])
+//         count[10]++;
+//      if (imageName[11] == randomProductShownList[o])
+//         count[11]++;
+//      if (imageName[12] == randomProductShownList[o])
+//         count[12]++;
+//      if (imageName[13] == randomProductShownList[o])
+//         count[13]++;
+//      if (imageName[14] == randomProductShownList[o])
+//         count[14]++;
+//      if (imageName[15] == randomProductShownList[o])
+//         count[15]++;
+//      if (imageName[16] == randomProductShownList[o])
+//         count[16]++;
+//      if (imageName[17] == randomProductShownList[o])
+//         count[17]++;
+//      if (imageName[18] == randomProductShownList[o])
+//         count[18]++;
+//      if (imageName[19] == randomProductShownList[o])
+//         count[19]++;
+//  }
+
+// console.log('count: ' + count);
+// randomProductShownList;
 
 // for(var o= 0; o < pickList.length; o++){
 //     if(pickList[o] == this.imageName)
 //         count++;}
-});
+
 
 
 // function imageShown() {
