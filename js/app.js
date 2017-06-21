@@ -1,16 +1,24 @@
 'use strict';
 
 // create function objects
-function Product (name, imageID, imageFilePath) {
+function Product (name, imageID, imageFilePath, timesShown) {
   this.name = name;
   this.imageID = imageID;
   this.imageFilePath = imageFilePath;
+  this.timesShown = 0;
+  this.timeclicked = 0;
 }
 
 //create prototype method
-// Product.prototype.getShownTime = function () {}
+// Product.prototype.imageShown = function () {}
 // Product.prototype.clickTime = function ()
 // {}
+
+console.log(eval('bag'))
+console.log(bag)
+console.log(eval(a[0]))
+
+var a = ['bag','banana']
 
 // create new objects
 var bag = new Product('bag.jpg', 1, 'img/assets/bag.jpg');
@@ -48,38 +56,50 @@ var randomImagePathList = [];
 var randomProductNameList = [];
 var indexList = [];
 
+var clicks = 0;
+var attempts = 0;
+var maxAttempts = 25;
+var imageShown = 0;
+
+// var indexList = [];
+//
+// function setup () {
+//   generateRandomProductID();
+//   generateRandomProduct();
+//   renderProduct();
+// }
+//
+// setup();
 //generate 3 random numbers (between 1 to 20) without duplicates for 25 times
 //the original code is from the link below
 https://stackoverflow.com/questions/3796786/random-number-generator-without-dupes-in-javascript
 // var nums = imageID;
-var gen_nums = [];
-function in_array(array, el) {
-  for (var k = 0 ; k < array.length; k++)
-    if(array[k] == el) {
-      return true;}
-    else {
-      return false;}
-}
+//TODO: use do while to generate the code
 
-function generate_rand(array) {
-  var rand = array[Math.floor(Math.random() * imageID.length)];
-  if(!in_array(gen_nums, rand)) {
-    gen_nums.push(rand);
-    return rand;
+var indexList = [];
+function generateRandomProductID () {
+  for (var i = 0; i < 3; i++) {
+    do {
+      var index = Math.floor(Math.random() * imageName.length);
+    }
+    while (indexList.includes(index));
+    indexList.push(index);
   }
-  return generate_rand(array);
+  // randomImagePathList[i] = imageName[indexList[i]];
+  // randomProductNameList[i] = imageName[indexList[i]].slice(0,imageName[indexList[i]].length - 4);
 }
-
-for (var i = 0; i < 3; i++) {
-  indexList.push(generate_rand(imageID));
-}
-
+generateRandomProductID();
 console.log(indexList);
 
-for (var j = 0; j < 3; j ++) {
-  randomImagePathList[j] = imageName[indexList[j]];
-  randomProductNameList[j] = imageName[indexList[j]].slice(0,imageName[indexList[j]].length - 4);
+//TODO: Wrap it into a function
+
+function generateRandomProduct () {
+  for (var j = 0; j < 3; j ++) {
+    randomImagePathList[j] = imageName[indexList[j]];
+    randomProductNameList[j] = imageName[indexList[j]].slice(0,imageName[indexList[j]].length - 4);
+  }
 }
+generateRandomProduct();
 
 //get the node to attach the new display results
 var productNameParent = document.getElementById('productName');
@@ -101,9 +121,29 @@ function renderProduct () {
 renderProduct();
 
 // click
-// productImagesParent.addEventListener('click', function (event) {
-//   var answer = event.target.getAttribute('id');
+productImagesParent.addEventListener('click', function (event) {
+  if (attempts === maxAttempts) {
+    return;
+  }
+  var answer = event.target.getAttribute('id');
+    attempts++;
+    score++;
+    renderResponse('woohoo!');
+  }
+
+function imageShown() {
+  for (var = 0; var < 3; var ++) {
+    if answer = randomProductNameList;
+}
+]
+//render resonse
+function renderResponse (response) {
+  var p = document.createElement('p');
+  p.textContent = response;
+  responseParent.append(p);
+}
+
 //
-// });
+
 
 // dataset
