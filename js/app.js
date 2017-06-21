@@ -84,8 +84,6 @@ function generateRandomProductID () {
   // randomProductNameList[i] = imageName[indexList[i]].slice(0,imageName[indexList[i]].length - 4);
 }
 // generateRandomProductID();
-generateRandomProductID();
-console.log(indexList);
 
 //TODO: Wrap it into a function
 
@@ -107,7 +105,13 @@ var productImagesParent = document.getElementById('productImages');
 //render product names and images
 function renderProduct () {
 
-  for(var n = 0; n < 3; n ++) {
+  if(attempts) {
+    for(var k = 0; k < 3; k ++) {
+      productNameParent.removeChild(productNameParent.lastChild);
+      productImagesParent.removeChild(productImagesParent.lastChild);
+    }
+  }
+  for (var n = 0; n < 3; n ++) {
     var h3 = document.createElement('h3');
     h3.textContent = randomProductNameList[n];
     productNameParent.append(h3);
@@ -125,6 +129,8 @@ function renderProduct () {
 //    img.setAttribute('src', 'img/assets/' + randomImagePathList[T]);
 //    img.setAttribute('id', randomProductNameList[T]);
 // }
+generateRandomProductID();
+console.log(indexList);
 generateRandomProduct();
 renderProduct();
 // updateProduct();
@@ -136,19 +142,26 @@ productImagesParent.addEventListener('click', function (event) {
   var answer = event.target.getAttribute('id');
   attempts++;
 
+  // if(attempts) {
+  //   for(var k = 0; k < 3; k ++) {
+  //     productNameParent.removeChild(productNameParent.lastChild);
+  //     productImagesParent.removeChild(productImagesParent.lastChild);
+  //   }
+  // }
   pickList.push(answer);
   console.log('pickList: ' + pickList);
   console.log('indexList: ' + indexList);
   console.log('attempts: ' + attempts);
-  // updateProduct();
+  generateRandomProductID();
+  generateRandomProduct();
+  renderProduct();
+  // updateProduct;
+
+// for(var o= 0; o < pickList.length; o++){
+//     if(pickList[o] == this.imageName)
+//         count++;}
 });
 
-if(attempts) {
-  for(var k = 0; k < 3; k ++) {
-    productNameParent.removeChild(productNameParent.lastChild);
-    productImagesParent.removeChild(productImagesParent.lastChild);
-  }
-}
 
 // function imageShown() {
 //   for (var = 0; var < 3; var ++) {
