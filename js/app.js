@@ -9,7 +9,7 @@ var randomProductNameList = [];
 var indexList = [];
 var attempts = 0;
 var maxAttempts = 24;
-var pickList = [];
+var pickList0 = [];
 var randomProductShownList = [];
 var count1 = new Array(20).fill(0);
 var count2 = new Array(20).fill(0);
@@ -146,6 +146,40 @@ generateRandomProduct();
 timesShown();
 renderProduct();
 
+function getPickList () {
+  var pickList = localStorage.getItem('pickList');
+  return pickList;
+}
+
+function getTreeState () {
+  var storageTreeState = localStorage.getItem('treeState');
+  //unstringify it
+  var parsedTreeState = JSON.parse(storageTreeState);
+  return parsedTreeState;
+}
+
+function pushPickList() {
+  var pickList = getPickList();
+  pickList = pickList.push(pickList)
+  createOrUpdatePickLsit(pickList);
+}
+
+function createOrUpdatePickList (value) {
+  value = value.toString();
+  localStorage.setItem('pickList', value);
+  var pickList = localStorage.getItem('pickList');
+  return pickList;
+}
+
+function deletePickList () {
+  localStorage.removeItem('pickList');
+  return null;
+}
+
+function clearAllData () {
+  localStorage.clear();
+  return null;
+}
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
   if (attempts === maxAttempts) {
@@ -153,9 +187,8 @@ productImagesParent.addEventListener('click', function (event) {
   }
   var answer = event.target.getAttribute('id');
   attempts++;
-  pickList.push(answer);
-  console.log('pickList: ' + pickList);;
-  console.log('attempts: ' + attempts);
+  pickList = pickList0.push(answer);
+  getPickList();
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
