@@ -1,6 +1,6 @@
 h3 {
   display: inline;
-  margin: auto;
+  margin: 10px 150px 150px 20px;
   padding: 20px;
 }
 
@@ -8,6 +8,20 @@ img {
   display: block;
   float: left;
   width:20%;
-  height: 30%
-  padding:10px;
+  height: 20%;
+  margin-top: 20px;
+  padding:5px;
 }
+
+ul {
+  margin-top: 400px;
+}
+
+li {
+  display: block;
+  position: relatvie;
+}
+
+/** {
+outline: solid black 5px;
+}*/

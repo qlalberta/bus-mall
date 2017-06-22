@@ -5,8 +5,6 @@ function Product (name, imageID, imageFilePath) {
   this.name = name;
   this.imageID = imageID;
   this.imageFilePath = imageFilePath;
-  // this.timesShown = 0;
-  // this.timeclicked = 0;
 }
 
 // create new objects
@@ -73,11 +71,10 @@ function generateRandomProduct () {
 //get the node to attach the new display results
 var productNameParent = document.getElementById('productName');
 var productImagesParent = document.getElementById('productImages');
-// var responseParent = document.getElementById('response');
-// var timeClickedParent = document.getElementById('timeClicked');
-// var timeShownParent = document.getElementById('timeShown');
-
+var responseParent = document.getElementById('response');
+var ul = document.createElement('ul');
 //render product names and images
+
 function renderProduct () {
 
   if(attempts) {
@@ -97,9 +94,21 @@ function renderProduct () {
   }
 }
 
+function renderResponse () {
+  if (attempts == maxAttempts) {
+    responseParent.append(ul);
+    for (var z = 0; z < 20 ; z++) {
+      var li = document.createElement('li');
+      ul.appendChild(li);
+      li.textContent = imageName[z].slice(0,imageName[z].length - 4) + ': shown ' + count1[z] + 'times; clicked for ' + count2[z] + 'times';
+    }
+  }
+}
+
 generateRandomProductID();
 generateRandomProduct();
 console.log(imageName[0].slice(0,imageName[0].length - 4));
+renderProduct();
 
 
 function timesShown () {
@@ -117,9 +126,6 @@ function timesShown () {
   console.log('count1: ' + count1);
 }
 
-timesShown();
-renderProduct();
-
 function timesClicked () {
   var count2 = new Array(20).fill(0);
   if (randomProductShownList.length == 75) {
@@ -130,10 +136,10 @@ function timesClicked () {
         }
       }
     }
-    console.log('timeclicked: ' + count2);
+    console.log('count2 ' + count2);
   }
 }
-// timesClicked();
+
 
 // click
 productImagesParent.addEventListener('click', function (event) {
@@ -143,14 +149,12 @@ productImagesParent.addEventListener('click', function (event) {
   var answer = event.target.getAttribute('id');
   attempts++;
   pickList.push(answer);
-  console.log('pickList: ' + pickList);
-  console.log('indexList: ' + indexList);
+  console.log('pickList: ' + pickList);;
   console.log('attempts: ' + attempts);
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
   timesShown();
   timesClicked();
+  // renderResponse();
 });
-console.log('randomProductShownList ' + randomProductShownList);
-console.log('pickList ' + pickList);
