@@ -6,7 +6,7 @@ function Product (name, imageID, imageFilePath) {
   this.imageID = imageID;
   this.imageFilePath = imageFilePath;
   // this.timesShown = 0;
-  this.timeclicked = 0;
+  // this.timeclicked = 0;
 }
 
 // create new objects
@@ -101,23 +101,39 @@ generateRandomProductID();
 generateRandomProduct();
 console.log(imageName[0].slice(0,imageName[0].length - 4));
 
-var count = new Array(20).fill(0);
+
 function timesShown () {
+  var count1 = new Array(20).fill(0);
   randomProductShownList = randomProductShownList.concat(randomProductNameList);
   if (randomProductShownList.length == 75) {
     for (var o = 0; o < randomProductShownList.length; o++) {
       for (var p = 0; p < imageName.length; p++) {
         if (imageName[p].slice(0,imageName[p].length - 4) == randomProductShownList[o]) {
-          count[p]++;
+          count1[p]++;
         }
       }
     }
   }
-  console.log('count ' + count);
+  console.log('count1: ' + count1);
 }
 
 timesShown();
 renderProduct();
+
+function timesClicked () {
+  var count2 = new Array(20).fill(0);
+  if (randomProductShownList.length == 75) {
+    for (var o = 0; o < pickList.length; o++) {
+      for (var p = 0; p < imageName.length; p++) {
+        if (imageName[p].slice(0,imageName[p].length - 4) == pickList[o]) {
+          count2[p]++;
+        }
+      }
+    }
+    console.log('timeclicked: ' + count2);
+  }
+}
+// timesClicked();
 
 // click
 productImagesParent.addEventListener('click', function (event) {
@@ -134,6 +150,7 @@ productImagesParent.addEventListener('click', function (event) {
   generateRandomProduct();
   renderProduct();
   timesShown();
+  timesClicked();
 });
 console.log('randomProductShownList ' + randomProductShownList);
 console.log('pickList ' + pickList);
