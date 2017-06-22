@@ -141,6 +141,37 @@ function timesClicked () {
   }
 }
 
+function barChart () {
+  var canvas = document.getElementById('chart');
+  var ctx = canvas.getContext('2d');
+  // modeled after the Getting Started example in the chartJS docs
+  var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: imageName,
+      datasets: [{
+        label: 'Times shown',
+        backgroundColor: 'rgb(251, 159, 21)',
+        borderColor: 'rgba(17, 18, 17, 0.93)',
+        data: count1,
+      },{
+        label: 'Number of votes',
+        backgroundColor: 'rgb(2, 10, 36)',
+        borderColor: 'rgba(17, 18, 17, 0.93)',
+        data: count2,
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+}
 
 // click
 productImagesParent.addEventListener('click', function (event) {
@@ -158,4 +189,7 @@ productImagesParent.addEventListener('click', function (event) {
   timesShown();
   timesClicked();
   renderResponse();
+  if (attempts === maxAttempts) {
+    barChart();
+  }
 });
