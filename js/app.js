@@ -3,7 +3,9 @@
 //create variables
 var imageName =
 ['bag.jpg', 'banana.jpg','bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg','cthulhu.jpg', 'dog-duck.jpg','dragon.jpg','pen.jpg','pet-sweep.jpg','scissors.jpg','shark.jpg', 'sweep.png','tauntaun.jpg','unicorn.jpg','usb.gif','water-can.jpg','wine-glass.jpg'];
-var productName = [];
+
+//TODO: Update the names
+var productName = ['Bag', 'Banana slicer','Bathroom table stand.jpg', 'Boots', 'Breakfast maker', 'Bubble gum', 'Chair','Cthulhu figure', 'Duck muzzle','Dragon meat','Pen','Pet sweeper','Pizza scissors','Shark sleeping bag', 'Baby sweeper','Tauntaun sleeping bag','Unicorn meat','Tenticle USB','Self watering can','Wine glass'];
 var randomImagePathList = [];
 var randomProductNameList = [];
 var indexList = [];
@@ -11,13 +13,13 @@ var attempts = 0;
 var maxAttempts = 24;
 // var pickList= [];
 var randomProductShownList = [];
-var count1 = new Array(20).fill(0);
-var count2 = new Array(20).fill(0);
+var timesShown = new Array(20).fill(0);
+var timesClicked = new Array(20).fill(0);
 
-//generate proper productName
-for(var b = 0; b < 20; b++) {
-  productName[b] = imageName[b].slice(0,imageName[b].length - 4);
-}
+// //generate proper productName
+// for(var b = 0; b < 20; b++) {
+//   productName[b] = imageName[b].slice(0,imageName[b].length - 4);
+// }
 
 //generate random numbers without duplicates
 function generateRandomProductID () {
@@ -55,43 +57,41 @@ function renderProduct () {
       productImagesParent.removeChild(productImagesParent.lastChild);
     }
   }
-  for (var n = 0; n < 3; n ++) {
+  for (var m = 0; m < 3; m ++) {
     var h3 = document.createElement('h3');
-    h3.textContent = randomProductNameList[n];
+    h3.textContent = randomProductNameList[m];
     productNameParent.append(h3);
     var img = document.createElement('img');
-    img.setAttribute('src', 'img/assets/' + randomImagePathList[n]);
-    img.setAttribute('id', randomProductNameList[n]);
+    img.setAttribute('src', 'img/assets/' + randomImagePathList[m]);
+    img.setAttribute('id', randomProductNameList[m]);
     productImagesParent.append(img);
   }
 }
 
 //create function to count the times of images shown
-function timesShown () {
+function timesImageShown () {
   randomProductShownList = randomProductShownList.concat(randomProductNameList);
   if (randomProductShownList.length == 75) {
-    for (var o = 0; o < randomProductShownList.length; o++) {
+    for (var n = 0; n < randomProductShownList.length; n++) {
       for (var p = 0; p < imageName.length; p++) {
-        if (imageName[p].slice(0,imageName[p].length - 4) == randomProductShownList[o]) {
-          count1[p]++;
+        if (productName[p] == randomProductShownList[n]) {
+          timesShown[p]++;
         }
       }
     }
   }
-  console.log('count1: ' + count1);
 }
 
 //create function to count times of clicks
-function timesClicked () {
+function timesImageClicked () {
   if (randomProductShownList.length == 75) {
-    for (var o = 0; o < pickList.length; o++) {
+    for (var n = 0; n < pickList.length; n++) {
       for (var p = 0; p < imageName.length; p++) {
-        if (imageName[p].slice(0,imageName[p].length - 4) == pickList[o]) {
-          count2[p]++;
+        if (productName[p] == pickList[p]) {
+          timesClicked[p]++;
         }
       }
     }
-    console.log('count2 ' + count2);
   }
 }
 
@@ -102,7 +102,7 @@ function renderResponse () {
     for (var z = 0; z < 20 ; z++) {
       var li = document.createElement('li');
       ul.appendChild(li);
-      li.textContent = productName[z] + ': shown ' + count1[z] + ' times; clicked ' + count2[z] + ' times.';
+      li.textContent = productName[z] + ': shown ' + timesShown[z] + ' times; clicked ' + timesClicked[z] + ' times.';
     }
   }
 }
@@ -120,12 +120,12 @@ function barChart () {
         label: 'Times shown',
         backgroundColor: 'rgb(251, 159, 21)',
         borderColor: 'rgba(17, 18, 17, 0.93)',
-        data: count1,
+        data: timesShown,
       },{
         label: 'Number of votes',
         backgroundColor: 'rgb(2, 10, 36)',
         borderColor: 'rgba(17, 18, 17, 0.93)',
-        data: count2,
+        data: timesClicked,
       }]
     },
     options: {
@@ -143,35 +143,47 @@ function barChart () {
 //call functions to display the first group of products
 generateRandomProductID();
 generateRandomProduct();
-timesShown();
+timesImageShown();
 renderProduct();
+// setUpdatePickList ();
 
-// function getPickList () {
-//   var storagepickList = localStorage.getItem('pickList');
-//   //unstringify it
-//   var parsedPickList = JSON.parse(storagePickList);
+// function setPickList () {
+//   var pickList = localStorage.setItem('pickList', '[]');
+//   pickList = localStorage.getItem('pickList');
+//   var answer = localStorage.getItem('answer');
+//   var parsedPickList = JSON.parse(pickList);
+//   var parsedAnswer = JSON.parse(answer);
+//   if (answer !== null) {
+//     parsedPickList = parsedPickList.push(parsedAnswer);
+//   }
 //   return parsedPickList;
 // }
+// //
+// function updatePickList () {
+//   var pickList = localStorage.getItem('pickList');
+//   var parsedPickList = JSON.parse(pickList);
+//   var stringifiedPickList = JSON.stringify(parsedPickList);
+//   localStorage.setItem('pickList', stringifiedPickList);
+//   var storagePickList = localStorage.getItem('PickList');
+//   //unstringify it
+//   // var parsedPickList = JSON.parse(storagePickList);
+//   return storagePickList;
+// }
 
-function setPickList () {
-  var pickList = localStorage.setItem('pickList', '[]');
-  var answer = localStorage.getItem('answer');
+var pickList = localStorage.setItem('pickList', '[]');
+function setUpdatePickList () {
+  pickList = localStorage.getItem('pickList');
   var parsedPickList = JSON.parse(pickList);
-  // var parsedAnswer = JSON.parse(answer);
+  var parsedAnswer = JSON.parse(answer);
   if (answer !== null) {
-    pickList = pickList.push(answer);
+    parsedPickList = parsedPickList.push(parsedAnswer);
   }
-  return pickList;
-}
-
-function updatePickList () {
-  stringifiedPickList = JSON.stringify(pickList);
+  var stringifiedPickList = JSON.stringify(parsedPickList);
   localStorage.setItem('pickList', stringifiedPickList);
   var storagePickList = localStorage.getItem('PickList');
-  //unstringify it
-  var parsedPickList = JSON.parse(storagePickList);
-  return parsedPickList;
+  return storagePickList;
 }
+
 
 function deletePickList () {
   localStorage.removeItem('pickList');
@@ -182,6 +194,7 @@ function clearAllData () {
   localStorage.clear();
   return null;
 }
+var answer = localStorage.getItem('answer');
 
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
@@ -190,13 +203,12 @@ productImagesParent.addEventListener('click', function (event) {
   }
   var answer = event.target.getAttribute('id');
   attempts++;
-  setPickList();
-  updatePickList ();
+  setUpdatePickList();
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
-  timesShown();
-  timesClicked();
+  timesImageShown();
+  timesImageClicked();
   renderResponse();
   if (attempts === maxAttempts) {
     barChart();
