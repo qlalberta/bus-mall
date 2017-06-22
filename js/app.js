@@ -1,37 +1,9 @@
 'use strict';
 
-// create function objects
-function Product (name, imageID, imageFilePath) {
-  this.name = name;
-  this.imageID = imageID;
-  this.imageFilePath = imageFilePath;
-}
-
-// create new objects
-var bag = new Product('bag.jpg', 1, 'img/assets/bag.jpg');
-var banana = new Product('banana.jpg', 2, 'img/assets/banana.jpg');
-var bathroom = new Product('bathroom.jpg', 3, 'img/assets/bathroom.jpg');
-var boots = new Product('boots.jpg', 4, 'img/assets/boots.jpg');
-var breakfast = new Product('breakfast.jpg', 5, 'img/assets/breakfast.jpg');
-var bubblegum = new Product('bubblegum.jpg', 6, 'img/assets/bublegum.jpg');
-var chair = new Product('chair.jpg', 7, 'img/assets/chair.jpg');
-var cthulhu = new Product('cthulhu.jpg', 8, 'img/assets/cthulhu.jpg');
-var dogDuck = new Product('dog-duck.jpg', 9, 'img/assets/dog-duck.jpg');
-var dragon = new Product('dragon.jpg', 10, 'img/assets/dragon.jpg');
-var pen = new Product('pen.jpg', 11, 'img/assets/pen.jpg');
-var petSweep = new Product('pet-sweep.jpg', 12, 'img/assets/pet-sweep.jpg');
-var scissors = new Product('scissors.jpg', 13, 'img/assets/scissors.jpg');
-var shark = new Product('shark.jpg', 14, 'img/assets/shark.jpg');
-var sweep = new Product('sweep.png', 15, 'img/assets/sweep.png');
-var tauntaun = new Product('tauntaun.jpg', 16, 'img/assets/tauntaun.jpg');
-var unicorn = new Product('unicorn.jpg', 17, 'img/assets/unicorn.jpg');
-var usb = new Product('usb.gif', 18, 'img/asserts/usb.gif');
-var waterCan = new Product('water-can.jpg', 19, 'img/assets/water-can.jpg');
-var wineGlass = new Product('wine-glass.jpg', 20, 'img/assets/wine-glass.jpg');
+//create variables
 var imageName =
-[bag.name, banana.name, bathroom.name, boots.name, breakfast.name, bubblegum.name, chair.name, cthulhu.name, dogDuck.name, dragon.name, pen.name, petSweep.name, scissors.name, shark.name, sweep.name, tauntaun.name, unicorn.name, usb.name, waterCan.name, wineGlass.name];
-
-
+['bag.jpg', 'banana.jpg','bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg','cthulhu.jpg', 'dog-duck.jpg','dragon.jpg','pen.jpg','pet-sweep.jpg','scissors.jpg','shark.jpg', 'sweep.png','tauntaun.jpg','unicorn.jpg','usb.gif','water-can.jpg','wine-glass.jpg'];
+var productName = [];
 var randomImagePathList = [];
 var randomProductNameList = [];
 var indexList = [];
@@ -41,14 +13,13 @@ var pickList = [];
 var randomProductShownList = [];
 var count1 = new Array(20).fill(0);
 var count2 = new Array(20).fill(0);
-// function setup () {
-//   generateRandomProductID();
-//   generateRandomProduct();
-//   renderProduct();
-// }
-//
-// setup();
 
+//generate proper productName
+for(var b = 0; b < 20; b++) {
+  productName[b] = imageName[b].slice(0,imageName[b].length - 4);
+}
+
+//generate random numbers without duplicates
 function generateRandomProductID () {
   indexList = [];
   for (var i = 0; i < 3; i++) {
@@ -58,24 +29,24 @@ function generateRandomProductID () {
     while (indexList.includes(index));
     indexList.push(index);
   }
-  // randomImagePathList[i] = imageName[indexList[i]];
-  // randomProductNameList[i] = imageName[indexList[i]].slice(0,imageName[indexList[i]].length - 4);
 }
 
+//creat function to generate random productNameList
 function generateRandomProduct () {
   for (var j = 0; j < 3; j ++) {
     randomImagePathList[j] = imageName[indexList[j]];
-    randomProductNameList[j] = imageName[indexList[j]].slice(0,imageName[indexList[j]].length - 4);
+    randomProductNameList[j] = productName[indexList[j]];
   }
 }
 
-//get the node to attach the new display results
+//get the nodes to attach the selection results
 var productNameParent = document.getElementById('productName');
 var productImagesParent = document.getElementById('productImages');
 var responseParent = document.getElementById('response');
 var ul = document.createElement('ul');
-//render product names and images
 
+
+//create function render product names and images
 function renderProduct () {
 
   if(attempts) {
@@ -95,22 +66,7 @@ function renderProduct () {
   }
 }
 
-function renderResponse () {
-  if (attempts == maxAttempts) {
-    responseParent.append(ul);
-    for (var z = 0; z < 20 ; z++) {
-      var li = document.createElement('li');
-      ul.appendChild(li);
-      li.textContent = imageName[z].slice(0,imageName[z].length - 4) + ': shown ' + count1[z] + ' times; clicked ' + count2[z] + ' times.';
-    }
-  }
-}
-
-generateRandomProductID();
-generateRandomProduct();
-console.log(imageName[0].slice(0,imageName[0].length - 4));
-
-
+//create function to count the times of images shown
 function timesShown () {
   randomProductShownList = randomProductShownList.concat(randomProductNameList);
   if (randomProductShownList.length == 75) {
@@ -125,9 +81,7 @@ function timesShown () {
   console.log('count1: ' + count1);
 }
 
-timesShown();
-renderProduct();
-
+//create function to count times of clicks
 function timesClicked () {
   if (randomProductShownList.length == 75) {
     for (var o = 0; o < pickList.length; o++) {
@@ -141,6 +95,19 @@ function timesClicked () {
   }
 }
 
+//create function to render selection results after maximum attempts
+function renderResponse () {
+  if (attempts == maxAttempts) {
+    responseParent.append(ul);
+    for (var z = 0; z < 20 ; z++) {
+      var li = document.createElement('li');
+      ul.appendChild(li);
+      li.textContent = productName[z] + ': shown ' + count1[z] + ' times; clicked ' + count2[z] + ' times.';
+    }
+  }
+}
+
+//create function to display the result in the form of a barChart
 function barChart () {
   var canvas = document.getElementById('chart');
   var ctx = canvas.getContext('2d');
@@ -148,7 +115,7 @@ function barChart () {
   var chart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: imageName,
+      labels: productName,
       datasets: [{
         label: 'Times shown',
         backgroundColor: 'rgb(251, 159, 21)',
@@ -173,7 +140,13 @@ function barChart () {
   });
 }
 
-// click
+//call functions to display the first group of products
+generateRandomProductID();
+generateRandomProduct();
+timesShown();
+renderProduct();
+
+// initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
   if (attempts === maxAttempts) {
     return;
