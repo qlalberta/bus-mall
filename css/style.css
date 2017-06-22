@@ -8,20 +8,16 @@ img {
   display: block;
   float: left;
   width:20%;
-  height: 20%;
+  height: 15%;
   margin-top: 20px;
   padding:5px;
 }
 
 ul {
-  margin-top: 400px;
+  margin-top: 450px;
 }
 
 li {
   display: block;
   position: relatvie;
 }
-
-/** {
-outline: solid black 5px;
-}*/
