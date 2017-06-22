@@ -39,7 +39,8 @@ var attempts = 0;
 var maxAttempts = 24;
 var pickList = [];
 var randomProductShownList = [];
-
+var count1 = new Array(20).fill(0);
+var count2 = new Array(20).fill(0);
 // function setup () {
 //   generateRandomProductID();
 //   generateRandomProduct();
@@ -100,7 +101,7 @@ function renderResponse () {
     for (var z = 0; z < 20 ; z++) {
       var li = document.createElement('li');
       ul.appendChild(li);
-      li.textContent = imageName[z].slice(0,imageName[z].length - 4) + ': shown ' + count1[z] + 'times; clicked for ' + count2[z] + 'times';
+      li.textContent = imageName[z].slice(0,imageName[z].length - 4) + ': shown ' + count1[z] + ' times; clicked ' + count2[z] + ' times.';
     }
   }
 }
@@ -108,11 +109,9 @@ function renderResponse () {
 generateRandomProductID();
 generateRandomProduct();
 console.log(imageName[0].slice(0,imageName[0].length - 4));
-renderProduct();
 
 
 function timesShown () {
-  var count1 = new Array(20).fill(0);
   randomProductShownList = randomProductShownList.concat(randomProductNameList);
   if (randomProductShownList.length == 75) {
     for (var o = 0; o < randomProductShownList.length; o++) {
@@ -126,8 +125,10 @@ function timesShown () {
   console.log('count1: ' + count1);
 }
 
+timesShown();
+renderProduct();
+
 function timesClicked () {
-  var count2 = new Array(20).fill(0);
   if (randomProductShownList.length == 75) {
     for (var o = 0; o < pickList.length; o++) {
       for (var p = 0; p < imageName.length; p++) {
@@ -156,5 +157,5 @@ productImagesParent.addEventListener('click', function (event) {
   renderProduct();
   timesShown();
   timesClicked();
-  // renderResponse();
+  renderResponse();
 });
