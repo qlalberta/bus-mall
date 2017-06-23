@@ -110,10 +110,10 @@ function renderResponse () {
 
 //create function to display the result in the form of a barChart
 function barChart () {
-  var canvas = document.getElementById('chart');
+  var canvas = document.getElementById('barchart');
   var ctx = canvas.getContext('2d');
   // modeled after the Getting Started example in the chartJS docs
-  var chart = new Chart(ctx, {
+  var barChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: productName,
@@ -123,7 +123,7 @@ function barChart () {
         borderColor: 'rgba(17, 18, 17, 0.93)',
         data: timesShown,
       },{
-        label: 'Number of votes',
+        label: 'Times clicked',
         backgroundColor: 'rgb(2, 10, 36)',
         borderColor: 'rgba(17, 18, 17, 0.93)',
         data: timesClicked,
@@ -135,6 +135,37 @@ function barChart () {
           ticks: {
             beginAtZero: true
           }
+        }]
+      }
+    }
+  });
+}
+
+//display the result in line chart
+function lineChart () {
+  var canvas = document.getElementById('linechart');
+  var ctx = canvas.getContext('2d')
+  // modeled after the Getting Started example in the chartJS docs
+  var lineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: productName,
+      datasets: [{
+        label: 'Times shown',
+        backgroundColor: 'rgb(251, 159, 21)',
+        borderColor: 'rgba(17, 18, 17, 0.93)',
+        data: timesShown,
+      },{
+        label: 'Times clicked',
+        backgroundColor: 'rgb(2, 10, 36)',
+        borderColor: 'rgba(17, 18, 17, 0.93)',
+        data: timesClicked,
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          stacked: true
         }]
       }
     }
@@ -165,5 +196,6 @@ productImagesParent.addEventListener('click', function (event) {
   renderResponse();
   if (attempts === maxAttempts) {
     barChart();
+    lineChart();
   }
 });
