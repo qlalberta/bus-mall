@@ -1,23 +1,80 @@
+@keyframes spinning {
+  from {
+    transform: rotate(20deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+body {
+  background: rgba(10, 23, 10, 0.1);
+  margin: auto;
+  text-align: center;
+}
+
+h1 {
+  font-family: 'Princess Sofia', cursive;
+  font-size: 50px;
+  color: rgba(219, 165, 45, 0.88);
+}
+
+h1 {
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-name: spinning;
+  animation-iteration-count: infinite;
+}
+
 h3 {
   display: inline;
-  margin: 10px 150px 150px 20px;
-  padding: 20px;
+  margin: 5px 150px 150px 30px;
+  padding: 10px;
+  text-align: center;
+  font-family: 'Poiret One', cursive;
+  font-size: 30px;
+  font-weight: bold;
 }
 
 img {
   display: block;
   float: left;
-  width:20%;
-  height: 15%;
+  width: 250px;
+  height: 200px;
   margin-top: 20px;
-  padding:5px;
+  margin-left:10px;
+  margin-right: 5px;
+  padding:50px 50px 0px 50px;
+  align: center;
 }
 
 ul {
-  margin-top: 450px;
+  margin-top: 300px;
+  text-align: left;
+  font-family: arial;
 }
 
 li {
   display: block;
   position: relatvie;
+}
+
+/** {
+  outline: 1px solid white;
+}*/
+
+img:first-child:hover {
+  transform: scaleX(2);
+}
+
+img:last-child:hover {
+  transform: rotate(30deg);
+}
+
+img:nth-child(even):hover {
+  transform: rotate(330deg);
+}
+
+p {
+  font-size: 30px;
 }

@@ -11,7 +11,7 @@ var randomProductNameList = [];
 var indexList = [];
 var attempts = 0;
 var maxAttempts = 24;
-// var pickList= [];
+var pickList = [];
 var randomProductShownList = [];
 var timesShown = new Array(20).fill(0);
 var timesClicked = new Array(20).fill(0);
@@ -171,30 +171,47 @@ renderProduct();
 // }
 
 var pickList = localStorage.setItem('pickList', '[]');
-function setUpdatePickList () {
-  pickList = localStorage.getItem('pickList');
-  var parsedPickList = JSON.parse(pickList);
-  var parsedAnswer = JSON.parse(answer);
-  if (answer !== null) {
-    parsedPickList = parsedPickList.push(parsedAnswer);
+// var answer = localStorage.setItem('answer','[]');
+function getPickList () {
+  var pickList = localStorage.getItem('pickList');
+  var pickList = JSON.parse(pickList);
+  // var parsedAnswer = JSON.parse(answer);
+  // if (answer !== null) {
+  //   parsedPickList = parsedPickList.push(parsedAnswer);
+  // }
+  // var stringifiedPickList = JSON.stringify(parsedPickList);
+  // localStorage.setItem('pickList', stringifiedPickList);
+  // var storagePickList = localStorage.getItem('pickList');
+  return pickList;
+}
+
+function updatePickList () {
+   var pickList = getPickList();
+   localStorage.setItem('answer', '');
+   var answer = localStorage.getItem('answer');
+   var parsedAnswer = JSON.parse(answer);
+   if (answer !== null) {
+    pickList = pickList.push(parsedAnswer);
   }
-  var stringifiedPickList = JSON.stringify(parsedPickList);
+  return pickList;
+}
+
+function storePickList () {
+  var stringifiedPickList = JSON.stringify(pickList);
   localStorage.setItem('pickList', stringifiedPickList);
-  var storagePickList = localStorage.getItem('PickList');
-  return storagePickList;
+  var storagePickList = localStorage.getItem('pickList');
+  return parsedPickList;
 }
+// function deletePickList () {
+//   localStorage.removeItem('pickList');
+//   return null;
+// }
+//
+// function clearAllData () {
+//   localStorage.clear();
+//   return null;
+// }
 
-
-function deletePickList () {
-  localStorage.removeItem('pickList');
-  return null;
-}
-
-function clearAllData () {
-  localStorage.clear();
-  return null;
-}
-var answer = localStorage.getItem('answer');
 
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
@@ -203,13 +220,18 @@ productImagesParent.addEventListener('click', function (event) {
   }
   var answer = event.target.getAttribute('id');
   attempts++;
-  setUpdatePickList();
+  pickList.push(answer);
+  console.log(pickList);
+  getPickList();
+  updatePickList();
+  storePickList();
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
   timesImageShown();
   timesImageClicked();
   renderResponse();
+  // updateStorePickList();
   if (attempts === maxAttempts) {
     barChart();
   }
