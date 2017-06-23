@@ -11,6 +11,7 @@ body {
   background: rgba(10, 23, 10, 0.1);
   margin: auto;
   text-align: center;
+  width: 1200px;
 }
 
 h1 {
@@ -28,7 +29,7 @@ h1 {
 
 h3 {
   display: inline;
-  margin: 5px 150px 150px 30px;
+  margin: 5px 100px 150px 30px;
   padding: 10px;
   text-align: center;
   font-family: 'Poiret One', cursive;
@@ -36,32 +37,40 @@ h3 {
   font-weight: bold;
 }
 
+#trial div {
+  margin: 50px;
+  padding: 20px;
+  text-align: center;
+  font-style: normal;
+  font-size: 25px;
+  float:left;
+
+}
+
 img {
-  display: block;
+  display: inline-block;
   float: left;
-  width: 250px;
+  width: 220px;
   height: 200px;
   margin-top: 20px;
   margin-left:10px;
   margin-right: 5px;
-  padding:50px 50px 0px 50px;
+  padding:40px 50px 0px 70px;
   align: center;
 }
 
 ul {
-  margin-top: 300px;
+  margin-top: 400px;
+  padding: 50px
   text-align: left;
   font-family: arial;
 }
 
 li {
   display: block;
-  position: relatvie;
+  /*position: relatvie;*/
+  text-align: left;
 }
-
-/** {
-  outline: 1px solid white;
-}*/
 
 img:first-child:hover {
   transform: scaleX(2);
@@ -75,6 +84,6 @@ img:nth-child(even):hover {
   transform: rotate(330deg);
 }
 
-p {
+#header {
   font-size: 30px;
 }
