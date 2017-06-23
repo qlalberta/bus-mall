@@ -3,23 +3,17 @@
 //create variables
 var imageName =
 ['bag.jpg', 'banana.jpg','bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg','cthulhu.jpg', 'dog-duck.jpg','dragon.jpg','pen.jpg','pet-sweep.jpg','scissors.jpg','shark.jpg', 'sweep.png','tauntaun.jpg','unicorn.jpg','usb.gif','water-can.jpg','wine-glass.jpg'];
-
-//TODO: Update the names
-var productName = ['Bag', 'Banana slicer','Bathroom table stand.jpg', 'Boots', 'Breakfast maker', 'Bubble gum', 'Chair','Cthulhu figure', 'Duck muzzle','Dragon meat','Pen','Pet sweeper','Pizza scissors','Shark sleeping bag', 'Baby sweeper','Tauntaun sleeping bag','Unicorn meat','Tenticle USB','Self watering can','Wine glass'];
+var productName = ['Bag', 'Banana slicer','Bathroom table stand', 'Boots', 'Breakfast maker', 'Bubble gum', 'Chair','Cthulhu figure', 'Duck muzzle','Dragon meat','Pen','Pet sweeper','Pizza scissors','Shark sleeping bag', 'Baby sweeper','Tauntaun sleeping bag','Unicorn meat','Tenticle USB','Self watering can','Wine glass'];
 var randomImagePathList = [];
 var randomProductNameList = [];
 var indexList = [];
 var attempts = 0;
-var maxAttempts = 24;
-// var pickList= [];
+var maxAttempts = 25;
+var trial = 25;
+var pickList = [];
 var randomProductShownList = [];
 var timesShown = new Array(20).fill(0);
 var timesClicked = new Array(20).fill(0);
-
-// //generate proper productName
-// for(var b = 0; b < 20; b++) {
-//   productName[b] = imageName[b].slice(0,imageName[b].length - 4);
-// }
 
 //generate random numbers without duplicates
 function generateRandomProductID () {
@@ -45,8 +39,7 @@ function generateRandomProduct () {
 var productNameParent = document.getElementById('productName');
 var productImagesParent = document.getElementById('productImages');
 var responseParent = document.getElementById('response');
-var ul = document.createElement('ul');
-
+var trialParent = document.getElementById('trial');
 
 //create function render product names and images
 function renderProduct () {
@@ -56,7 +49,9 @@ function renderProduct () {
       productNameParent.removeChild(productNameParent.lastChild);
       productImagesParent.removeChild(productImagesParent.lastChild);
     }
+    trialParent.removeChild(trialParent.lastChild);
   }
+
   for (var m = 0; m < 3; m ++) {
     var h3 = document.createElement('h3');
     h3.textContent = randomProductNameList[m];
@@ -73,7 +68,7 @@ function timesImageShown () {
   randomProductShownList = randomProductShownList.concat(randomProductNameList);
   if (randomProductShownList.length == 75) {
     for (var n = 0; n < randomProductShownList.length; n++) {
-      for (var p = 0; p < imageName.length; p++) {
+      for (var p = 0; p < productName.length; p++) {
         if (productName[p] == randomProductShownList[n]) {
           timesShown[p]++;
         }
@@ -84,10 +79,10 @@ function timesImageShown () {
 
 //create function to count times of clicks
 function timesImageClicked () {
-  if (randomProductShownList.length == 75) {
+  if (randomProductShownList.length == 78) {
     for (var n = 0; n < pickList.length; n++) {
-      for (var p = 0; p < imageName.length; p++) {
-        if (productName[p] == pickList[p]) {
+      for (var p = 0; p < productName.length; p++) {
+        if (productName[p] == pickList[n]) {
           timesClicked[p]++;
         }
       }
@@ -97,8 +92,14 @@ function timesImageClicked () {
 
 //create function to render selection results after maximum attempts
 function renderResponse () {
+  var div = document.createElement('div');
+  var ul = document.createElement('ul');
+  trialParent.appendChild(div);
+  responseParent.appendChild(ul);
+  if(attempts < 25)
+    div.textContent = 'You have ' + trial + ' attmepts left.';
   if (attempts == maxAttempts) {
-    responseParent.append(ul);
+    responseParent.appendChild(ul);
     for (var z = 0; z < 20 ; z++) {
       var li = document.createElement('li');
       ul.appendChild(li);
@@ -145,56 +146,6 @@ generateRandomProductID();
 generateRandomProduct();
 timesImageShown();
 renderProduct();
-// setUpdatePickList ();
-
-// function setPickList () {
-//   var pickList = localStorage.setItem('pickList', '[]');
-//   pickList = localStorage.getItem('pickList');
-//   var answer = localStorage.getItem('answer');
-//   var parsedPickList = JSON.parse(pickList);
-//   var parsedAnswer = JSON.parse(answer);
-//   if (answer !== null) {
-//     parsedPickList = parsedPickList.push(parsedAnswer);
-//   }
-//   return parsedPickList;
-// }
-// //
-// function updatePickList () {
-//   var pickList = localStorage.getItem('pickList');
-//   var parsedPickList = JSON.parse(pickList);
-//   var stringifiedPickList = JSON.stringify(parsedPickList);
-//   localStorage.setItem('pickList', stringifiedPickList);
-//   var storagePickList = localStorage.getItem('PickList');
-//   //unstringify it
-//   // var parsedPickList = JSON.parse(storagePickList);
-//   return storagePickList;
-// }
-
-var pickList = localStorage.setItem('pickList', '[]');
-function setUpdatePickList () {
-  pickList = localStorage.getItem('pickList');
-  var parsedPickList = JSON.parse(pickList);
-  var parsedAnswer = JSON.parse(answer);
-  if (answer !== null) {
-    parsedPickList = parsedPickList.push(parsedAnswer);
-  }
-  var stringifiedPickList = JSON.stringify(parsedPickList);
-  localStorage.setItem('pickList', stringifiedPickList);
-  var storagePickList = localStorage.getItem('PickList');
-  return storagePickList;
-}
-
-
-function deletePickList () {
-  localStorage.removeItem('pickList');
-  return null;
-}
-
-function clearAllData () {
-  localStorage.clear();
-  return null;
-}
-var answer = localStorage.getItem('answer');
 
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
@@ -203,7 +154,9 @@ productImagesParent.addEventListener('click', function (event) {
   }
   var answer = event.target.getAttribute('id');
   attempts++;
-  setUpdatePickList();
+  console.log(attempts);
+  trial--;
+  pickList.push(answer);
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
