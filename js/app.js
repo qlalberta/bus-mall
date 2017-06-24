@@ -10,6 +10,7 @@ var indexList = [];
 var attempts = 0;
 var maxAttempts = 25;
 var trial = 25;
+var numberOfImage = 75;
 var pickList = [];
 var randomProductShownList = [];
 var timesShown = new Array(20).fill(0);
@@ -66,7 +67,7 @@ function renderProduct () {
 //create function to count the times of images shown
 function timesImageShown () {
   randomProductShownList = randomProductShownList.concat(randomProductNameList);
-  if (randomProductShownList.length == 75) {
+  if (randomProductShownList.length == numberOfImage) {
     for (var n = 0; n < randomProductShownList.length; n++) {
       for (var p = 0; p < productName.length; p++) {
         if (productName[p] == randomProductShownList[n]) {
@@ -79,7 +80,7 @@ function timesImageShown () {
 
 //create function to count times of clicks
 function timesImageClicked () {
-  if (randomProductShownList.length == 78) {
+  if (randomProductShownList.length == numberOfImage) {
     for (var n = 0; n < pickList.length; n++) {
       for (var p = 0; p < productName.length; p++) {
         if (productName[p] == pickList[n]) {
@@ -96,7 +97,7 @@ function renderResponse () {
   var ul = document.createElement('ul');
   trialParent.appendChild(div);
   responseParent.appendChild(ul);
-  if(attempts < 25)
+  if(attempts < maxAttempts)
     div.textContent = 'You have ' + trial + ' attmepts left.';
   if (attempts == maxAttempts) {
     responseParent.appendChild(ul);
@@ -144,7 +145,7 @@ function barChart () {
 //display the result in line chart
 function lineChart () {
   var canvas = document.getElementById('linechart');
-  var ctx = canvas.getContext('2d')
+  var ctx = canvas.getContext('2d');
   // modeled after the Getting Started example in the chartJS docs
   var lineChart = new Chart(ctx, {
     type: 'line',
@@ -178,16 +179,75 @@ generateRandomProduct();
 timesImageShown();
 renderProduct();
 
+//create function to store value of pickList to browser
+function storePickList (answer) {
+  if (pickList !== null) {
+    pickList.push(answer);
+    var stringifiedPickList = JSON.stringify(pickList);
+  }
+  localStorage.setItem('pickList', stringifiedPickList);
+
+  var parsedPickList = JSON.parse(stringifiedPickList);
+  return parsedPickList;
+}
+
+//create function to store value of randomProductShownList to browser
+function storeRandomProductShownList (randomProductNameList) {
+  if (randomProductShownList !== null) {
+    randomProductShownList.push(randomProductNameList);
+    var stringifiedRandomProductShownList = JSON.stringify(randomProductShownList);
+  }
+  localStorage.setItem('randomProductShownList',stringifiedRandomProductShownList );
+
+  var parsedRandomProductShownList = JSON.parse(stringifiedRandomProductShownList);
+  return parsedRandomProductShownList;
+}
+
+//create function to store and update trial
+function getUpdateTrials (trial ) {
+  if ( trial !== null) {
+    var stringifiedTrial = JSON.stringify(trial);
+  }
+  localStorage.setItem('trial', stringifiedTrial);
+  var parsedTrial = JSON.parse(stringifiedTrial);
+  return parsedTrial;
+}
+
+//create function to store timesClicked
+function getUpdateTimesClicked (timesClicked ) {
+  if ( timesClicked !== null) {
+    var stringifiedTimesClicked = JSON.stringify(timesClicked);
+  }
+  localStorage.setItem('timesClicked', stringifiedTimesClicked);
+
+  var parsedTimesClicked = JSON.parse(stringifiedTimesClicked);
+  return parsedTimesClicked;
+}
+
+//create function to store timesShown
+function getUpdateTimesShown (timesShown ) {
+  if ( timesShown !== null) {
+    var stringifiedTimesShown = JSON.stringify(timesShown);
+  }
+  localStorage.setItem('timesShown', stringifiedTimesShown);
+
+  var parsedTimesShown = JSON.parse(stringifiedTimesShown);
+  return parsedTimesShown;
+}
+
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
   if (attempts === maxAttempts) {
     return;
   }
+  if (attempts) {
+    storePickList(answer);
+    storeRandomProductShownList (randomProductNameList);
+    getUpdateTrials (trial );
+  }
   var answer = event.target.getAttribute('id');
   attempts++;
-  console.log(attempts);
   trial--;
-  pickList.push(answer);
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
