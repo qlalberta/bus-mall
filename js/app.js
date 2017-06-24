@@ -3,23 +3,17 @@
 //create variables
 var imageName =
 ['bag.jpg', 'banana.jpg','bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg','cthulhu.jpg', 'dog-duck.jpg','dragon.jpg','pen.jpg','pet-sweep.jpg','scissors.jpg','shark.jpg', 'sweep.png','tauntaun.jpg','unicorn.jpg','usb.gif','water-can.jpg','wine-glass.jpg'];
-
-//TODO: Update the names
-var productName = ['Bag', 'Banana slicer','Bathroom table stand.jpg', 'Boots', 'Breakfast maker', 'Bubble gum', 'Chair','Cthulhu figure', 'Duck muzzle','Dragon meat','Pen','Pet sweeper','Pizza scissors','Shark sleeping bag', 'Baby sweeper','Tauntaun sleeping bag','Unicorn meat','Tenticle USB','Self watering can','Wine glass'];
+var productName = ['Bag', 'Banana slicer','Bathroom table stand', 'Boots', 'Breakfast maker', 'Bubble gum', 'Chair','Cthulhu figure', 'Duck muzzle','Dragon meat','Pen','Pet sweeper','Pizza scissors','Shark sleeping bag', 'Baby sweeper','Tauntaun sleeping bag','Unicorn meat','Tenticle USB','Self watering can','Wine glass'];
 var randomImagePathList = [];
 var randomProductNameList = [];
 var indexList = [];
 var attempts = 0;
 var maxAttempts = 24;
-// var pickList= [];
+var pickList = [];
 var randomProductShownList = [];
 var timesShown = new Array(20).fill(0);
 var timesClicked = new Array(20).fill(0);
 
-// //generate proper productName
-// for(var b = 0; b < 20; b++) {
-//   productName[b] = imageName[b].slice(0,imageName[b].length - 4);
-// }
 
 //generate random numbers without duplicates
 function generateRandomProductID () {
@@ -86,8 +80,8 @@ function timesImageShown () {
 function timesImageClicked () {
   if (randomProductShownList.length == 75) {
     for (var n = 0; n < pickList.length; n++) {
-      for (var p = 0; p < imageName.length; p++) {
-        if (productName[p] == pickList[p]) {
+      for (var p = 0; p < productName.length; p++) {
+        if (productName[p] == pickList[n]) {
           timesClicked[p]++;
         }
       }
@@ -145,56 +139,30 @@ generateRandomProductID();
 generateRandomProduct();
 timesImageShown();
 renderProduct();
-// setUpdatePickList ();
 
-// function setPickList () {
-//   var pickList = localStorage.setItem('pickList', '[]');
-//   pickList = localStorage.getItem('pickList');
-//   var answer = localStorage.getItem('answer');
-//   var parsedPickList = JSON.parse(pickList);
-//   var parsedAnswer = JSON.parse(answer);
-//   if (answer !== null) {
-//     parsedPickList = parsedPickList.push(parsedAnswer);
-//   }
-//   return parsedPickList;
-// }
-// //
-// function updatePickList () {
-//   var pickList = localStorage.getItem('pickList');
-//   var parsedPickList = JSON.parse(pickList);
-//   var stringifiedPickList = JSON.stringify(parsedPickList);
-//   localStorage.setItem('pickList', stringifiedPickList);
-//   var storagePickList = localStorage.getItem('PickList');
-//   //unstringify it
-//   // var parsedPickList = JSON.parse(storagePickList);
-//   return storagePickList;
-// }
-
-var pickList = localStorage.setItem('pickList', '[]');
-function setUpdatePickList () {
-  pickList = localStorage.getItem('pickList');
-  var parsedPickList = JSON.parse(pickList);
-  var parsedAnswer = JSON.parse(answer);
-  if (answer !== null) {
-    parsedPickList = parsedPickList.push(parsedAnswer);
+//create function to store value of pickList in eventListerner
+function storePickList (answer) {
+  if (pickList !== null) {
+    pickList.push(answer);
+    var stringifiedPickList = JSON.stringify(pickList);
   }
-  var stringifiedPickList = JSON.stringify(parsedPickList);
   localStorage.setItem('pickList', stringifiedPickList);
-  var storagePickList = localStorage.getItem('PickList');
-  return storagePickList;
+
+  var parsedPickList = JSON.parse(stringifiedPickList);
+  return parsedPickList;
 }
 
+//create function to store value of randomProductShownList
+function storeRandomProductShownList (randomProductNameList) {
+  if (randomProductShownList !== null) {
+    randomProductShownList.push(randomProductNameList);
+    var stringifiedRandomProductShownList = JSON.stringify(randomProductShownList);
+  }
+  localStorage.setItem('randomProductShownList',stringifiedRandomProductShownList );
 
-function deletePickList () {
-  localStorage.removeItem('pickList');
-  return null;
+  var parsedRandomProductShownList = JSON.parse(stringifiedRandomProductShownList);
+  return parsedRandomProductShownList;
 }
-
-function clearAllData () {
-  localStorage.clear();
-  return null;
-}
-var answer = localStorage.getItem('answer');
 
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
@@ -203,7 +171,8 @@ productImagesParent.addEventListener('click', function (event) {
   }
   var answer = event.target.getAttribute('id');
   attempts++;
-  setUpdatePickList();
+  storePickList(answer);
+  storeRandomProductShownList (randomProductNameList);
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
