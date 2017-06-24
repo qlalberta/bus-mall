@@ -1,23 +1,89 @@
+@keyframes spinning {
+  from {
+    transform: rotate(20deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+body {
+  background: rgba(10, 23, 10, 0.1);
+  margin: auto;
+  text-align: center;
+  width: 1200px;
+}
+
+h1 {
+  font-family: 'Princess Sofia', cursive;
+  font-size: 50px;
+  color: rgba(219, 165, 45, 0.88);
+}
+
+h1 {
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-name: spinning;
+  animation-iteration-count: infinite;
+}
+
 h3 {
   display: inline;
-  margin: 10px 150px 150px 20px;
+  margin: 5px 100px 150px 30px;
+  padding: 10px;
+  text-align: center;
+  font-family: 'Poiret One', cursive;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#trial div {
+  margin: 50px;
   padding: 20px;
+  text-align: center;
+  font-style: normal;
+  font-size: 25px;
+  float:left;
+
 }
 
 img {
-  display: block;
+  display: inline-block;
   float: left;
-  width:20%;
-  height: 15%;
+  width: 220px;
+  height: 200px;
   margin-top: 20px;
-  padding:5px;
+  margin-left:10px;
+  margin-right: 5px;
+  padding:40px 50px 0px 70px;
+  align: center;
 }
 
 ul {
-  margin-top: 450px;
+  margin-top: 400px;
+  padding: 50px
+  text-align: left;
+  font-family: arial;
 }
 
 li {
   display: block;
-  position: relatvie;
+  /*position: relatvie;*/
+  text-align: left;
+}
+
+img:first-child:hover {
+  transform: scaleX(2);
+}
+
+img:last-child:hover {
+  transform: rotate(30deg);
+}
+
+img:nth-child(even):hover {
+  transform: rotate(330deg);
+}
+
+#header {
+  font-size: 30px;
 }
