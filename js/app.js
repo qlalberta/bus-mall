@@ -178,6 +178,30 @@ generateRandomProduct();
 timesImageShown();
 renderProduct();
 
+//create function to store value of pickList in eventListerner
+function storePickList (answer) {
+  if (pickList !== null) {
+    pickList.push(answer);
+    var stringifiedPickList = JSON.stringify(pickList);
+  }
+  localStorage.setItem('pickList', stringifiedPickList);
+
+  var parsedPickList = JSON.parse(stringifiedPickList);
+  return parsedPickList;
+}
+
+//create function to store value of randomProductShownList
+function storeRandomProductShownList (randomProductNameList) {
+  if (randomProductShownList !== null) {
+    randomProductShownList.push(randomProductNameList);
+    var stringifiedRandomProductShownList = JSON.stringify(randomProductShownList);
+  }
+  localStorage.setItem('randomProductShownList',stringifiedRandomProductShownList );
+
+  var parsedRandomProductShownList = JSON.parse(stringifiedRandomProductShownList);
+  return parsedRandomProductShownList;
+}
+
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
   if (attempts === maxAttempts) {
@@ -185,9 +209,9 @@ productImagesParent.addEventListener('click', function (event) {
   }
   var answer = event.target.getAttribute('id');
   attempts++;
-  console.log(attempts);
+  storePickList(answer);
+  storeRandomProductShownList (randomProductNameList);
   trial--;
-  pickList.push(answer);
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
