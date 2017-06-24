@@ -240,13 +240,10 @@ productImagesParent.addEventListener('click', function (event) {
   if (attempts === maxAttempts) {
     return;
   }
-  if (attempts) {
-    storePickList(answer);
-    storeRandomProductShownList (randomProductNameList);
-    getUpdateTrials (trial );
-  }
   var answer = event.target.getAttribute('id');
   attempts++;
+  storePickList(answer);
+  storeRandomProductShownList (randomProductNameList);
   trial--;
   generateRandomProductID();
   generateRandomProduct();
