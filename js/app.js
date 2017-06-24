@@ -10,6 +10,7 @@ var indexList = [];
 var attempts = 0;
 var maxAttempts = 25;
 var trial = 25;
+var numberOfImage = 75;
 var pickList = [];
 var randomProductShownList = [];
 var timesShown = new Array(20).fill(0);
@@ -66,7 +67,7 @@ function renderProduct () {
 //create function to count the times of images shown
 function timesImageShown () {
   randomProductShownList = randomProductShownList.concat(randomProductNameList);
-  if (randomProductShownList.length == 75) {
+  if (randomProductShownList.length == numberOfImage) {
     for (var n = 0; n < randomProductShownList.length; n++) {
       for (var p = 0; p < productName.length; p++) {
         if (productName[p] == randomProductShownList[n]) {
@@ -79,7 +80,7 @@ function timesImageShown () {
 
 //create function to count times of clicks
 function timesImageClicked () {
-  if (randomProductShownList.length == 78) {
+  if (randomProductShownList.length == numberOfImage) {
     for (var n = 0; n < pickList.length; n++) {
       for (var p = 0; p < productName.length; p++) {
         if (productName[p] == pickList[n]) {
@@ -96,7 +97,7 @@ function renderResponse () {
   var ul = document.createElement('ul');
   trialParent.appendChild(div);
   responseParent.appendChild(ul);
-  if(attempts < 25)
+  if(attempts < maxAttempts)
     div.textContent = 'You have ' + trial + ' attmepts left.';
   if (attempts == maxAttempts) {
     responseParent.appendChild(ul);
@@ -113,7 +114,7 @@ function barChart () {
   var canvas = document.getElementById('barchart');
   var ctx = canvas.getContext('2d');
   // modeled after the Getting Started example in the chartJS docs
-  var barChart = new Chart(ctx, {
+  barChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: productName,
@@ -144,9 +145,9 @@ function barChart () {
 //display the result in line chart
 function lineChart () {
   var canvas = document.getElementById('linechart');
-  var ctx = canvas.getContext('2d')
+  var ctx = canvas.getContext('2d');
   // modeled after the Getting Started example in the chartJS docs
-  var lineChart = new Chart(ctx, {
+  lineChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: productName,
@@ -178,39 +179,18 @@ generateRandomProduct();
 timesImageShown();
 renderProduct();
 
-//create function to store value of pickList in eventListerner
-function storePickList (answer) {
-  if (pickList !== null) {
-    pickList.push(answer);
-    var stringifiedPickList = JSON.stringify(pickList);
-  }
-  localStorage.setItem('pickList', stringifiedPickList);
-
-  var parsedPickList = JSON.parse(stringifiedPickList);
-  return parsedPickList;
-}
-
-//create function to store value of randomProductShownList
-function storeRandomProductShownList (randomProductNameList) {
-  if (randomProductShownList !== null) {
-    randomProductShownList.push(randomProductNameList);
-    var stringifiedRandomProductShownList = JSON.stringify(randomProductShownList);
-  }
-  localStorage.setItem('randomProductShownList',stringifiedRandomProductShownList );
-
-  var parsedRandomProductShownList = JSON.parse(stringifiedRandomProductShownList);
-  return parsedRandomProductShownList;
-}
-
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
   if (attempts === maxAttempts) {
     return;
   }
+  if (attempts) {
+    storePickList(answer);
+    storeRandomProductShownList (randomProductNameList);
+    getUpdateTrials (trial );
+  }
   var answer = event.target.getAttribute('id');
   attempts++;
-  storePickList(answer);
-  storeRandomProductShownList (randomProductNameList);
   trial--;
   generateRandomProductID();
   generateRandomProduct();
