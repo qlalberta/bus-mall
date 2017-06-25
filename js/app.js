@@ -62,6 +62,7 @@ function renderProduct () {
     productImagesParent.append(img);
   }
 }
+//TODO: store the imageState. I probably don't need to to store timesClicked and timesShown
 
 //create function to count the times of images shown
 function timesImageShown () {
@@ -97,7 +98,7 @@ function renderResponse () {
   trialParent.appendChild(div);
   responseParent.appendChild(ul);
   if(attempts < maxAttempts)
-    div.textContent = 'You have ' + trial + ' attempts left.';
+    div.textContent = 'You have ' + trial + ' attmepts left.';
   if (attempts == maxAttempts) {
     responseParent.appendChild(ul);
     for (var z = 0; z < 20 ; z++) {
