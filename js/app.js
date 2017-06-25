@@ -10,7 +10,7 @@ var previousIndexList = [];
 var indexList = [];
 var attempts = 0;
 var maxAttempts = 25;
-var trial = 25;
+// var trial = localStorage.setItem('trial', '25');
 var numberOfImage = 78;
 var pickList = [];
 var randomProductShownList = [];
@@ -50,6 +50,7 @@ function renderProduct () {
       productNameParent.removeChild(productNameParent.lastChild);
       productImagesParent.removeChild(productImagesParent.lastChild);
     }
+    // trialParent.removeChild(trialParent.lastChild);
   }
   for (var m = 0; m < 3; m ++) {
     var h3 = document.createElement('h3');
@@ -92,9 +93,11 @@ function timesImageClicked () {
 
 //create a function to get trial number
 function getTrial() {
+  // var trial = localStorage.setItem('trial', '25');
   var trial = localStorage.getItem('trial');
-  if (trial !== null) {
-    trial = parseInt(trial);
+  var parsedTrial = JSON.parse(trial);
+  if (parsedTrial !== null) {
+    trial = parseInt(parsedTrial);
     return trial;
   }
 }
@@ -106,7 +109,7 @@ function createOrUpdateTrial (value) {
   return trial;
 }
 
-// var trial = localStorage.setItem('trial', '25');
+var trial = 25;
 function decreaseTrial () {
   // value = value.toString;
   trial = getTrial();
@@ -158,12 +161,6 @@ function renderResponse () {
       li.textContent = productName[z] + ': shown ' + timesShown[z] + ' times; clicked ' + timesClicked[z] + ' times.';
     }
   }
-}
-
-//create a function to delete the data after all the selection
-function deleteTrial () {
-  localStorage.removeItem('trial');
-  return null;
 }
 
 //create function to display the result in the form of a barChart
@@ -245,11 +242,11 @@ productImagesParent.addEventListener('click', function (event) {
   var answer = event.target.getAttribute('id');
   attempts++;
   decreaseTrial();
-  renderTrial();
   pickList.push(answer);
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
+  renderTrial();
   timesImageShown();
   timesImageClicked();
   renderResponse();
@@ -258,5 +255,3 @@ productImagesParent.addEventListener('click', function (event) {
   //   lineChart();
   // }
 });
-
-// deleteTrial();
