@@ -6,11 +6,12 @@ var imageName =
 var productName = ['Bag', 'Banana slicer','Bathroom table stand', 'Boots', 'Breakfast maker', 'Bubble gum', 'Chair','Cthulhu figure', 'Duck muzzle','Dragon meat','Pen','Pet sweeper','Pizza scissors','Shark sleeping bag', 'Baby sweeper','Tauntaun sleeping bag','Unicorn meat','Tenticle USB','Self watering can','Wine glass'];
 var randomImagePathList = [];
 var randomProductNameList = [];
+var previousIndexList = [];
 var indexList = [];
 var attempts = 0;
 var maxAttempts = 25;
 var trial = 25;
-var numberOfImage = 75;
+var numberOfImage = 78;
 var pickList = [];
 var randomProductShownList = [];
 var timesShown = new Array(20).fill(0);
@@ -18,19 +19,19 @@ var timesClicked = new Array(20).fill(0);
 
 //generate random numbers without duplicates
 function generateRandomProductID () {
+  previousIndexList = indexList;
   indexList = [];
   for (var i = 0; i < 3; i++) {
     do {
       var index = Math.floor(Math.random() * imageName.length);
-    }
-    while (indexList.includes(index));
+    } while (indexList.includes(index) || previousIndexList.includes(index));
     indexList.push(index);
   }
 }
 
-//creat function to generate random productNameList
+//generate random products
 function generateRandomProduct () {
-  for (var j = 0; j < 3; j ++) {
+  for (var j = 0; j < 3; j++) {
     randomImagePathList[j] = imageName[indexList[j]];
     randomProductNameList[j] = productName[indexList[j]];
   }
@@ -63,6 +64,7 @@ function renderProduct () {
     productImagesParent.append(img);
   }
 }
+//TODO: store the imageState. I probably don't need to to store timesClicked and timesShown
 
 //create function to count the times of images shown
 function timesImageShown () {
@@ -98,7 +100,7 @@ function renderResponse () {
   trialParent.appendChild(div);
   responseParent.appendChild(ul);
   if(attempts < maxAttempts)
-    div.textContent = 'You have ' + trial + ' attmepts left.';
+    div.textContent = 'You have ' + trial + ' attempts left.';
   if (attempts == maxAttempts) {
     responseParent.appendChild(ul);
     for (var z = 0; z < 20 ; z++) {
@@ -184,14 +186,10 @@ productImagesParent.addEventListener('click', function (event) {
   if (attempts === maxAttempts) {
     return;
   }
-  if (attempts) {
-    storePickList(answer);
-    storeRandomProductShownList (randomProductNameList);
-    getUpdateTrials (trial );
-  }
   var answer = event.target.getAttribute('id');
   attempts++;
   trial--;
+  pickList.push(answer);
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
