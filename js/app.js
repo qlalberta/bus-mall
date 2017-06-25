@@ -45,7 +45,6 @@ var trialParent = document.getElementById('trial');
 
 //create function render product names and images
 function renderProduct () {
-
   if(attempts) {
     for(var k = 0; k < 3; k ++) {
       productNameParent.removeChild(productNameParent.lastChild);
@@ -53,7 +52,6 @@ function renderProduct () {
     }
     trialParent.removeChild(trialParent.lastChild);
   }
-
   for (var m = 0; m < 3; m ++) {
     var h3 = document.createElement('h3');
     h3.textContent = randomProductNameList[m];
@@ -64,6 +62,7 @@ function renderProduct () {
     productImagesParent.append(img);
   }
 }
+//TODO: store the imageState. I probably don't need to to store timesClicked and timesShown
 
 //create function to count the times of images shown
 function timesImageShown () {
@@ -185,7 +184,10 @@ productImagesParent.addEventListener('click', function (event) {
   if (attempts === maxAttempts) {
     return;
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 43a613b2322da520fab48433e88801f7bf17940c
   var answer = event.target.getAttribute('id');
   attempts++;
   trial--;
