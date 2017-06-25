@@ -160,6 +160,12 @@ function renderResponse () {
   }
 }
 
+//create a function to delete the data after all the selection
+function deleteTrial () {
+  localStorage.removeItem('trial');
+  return null;
+}
+
 //create function to display the result in the form of a barChart
 // function barChart () {
 //   var canvas = document.getElementById('barchart');
@@ -252,3 +258,5 @@ productImagesParent.addEventListener('click', function (event) {
   //   lineChart();
   // }
 });
+
+// deleteTrial();

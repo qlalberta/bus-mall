@@ -37,22 +37,24 @@ h3 {
   font-weight: bold;
 }
 
-#trial div {
-  margin: 50px;
-  padding: 20px;
+#displaytrial {
+  margin-top: 500px;
+  padding-top: 50px;
   text-align: center;
   font-style: normal;
   font-size: 25px;
-  float:left;
+  /*position: relative;*/
+  display: block;
+  /*float:left;*/
 
 }
 
 img {
-  display: inline-block;
-  float: left;
+  /*display: inline-block;*/
+  /*float: left;*/
   width: 220px;
   height: 200px;
-  margin-top: 20px;
+  /*margin-top: 20px;*/
   margin-left:10px;
   margin-right: 5px;
   padding:40px 50px 0px 70px;
@@ -87,3 +89,7 @@ img:nth-child(even):hover {
 #header {
   font-size: 30px;
 }
+
+/** {
+  outline: solid black 1px;
+}*/
