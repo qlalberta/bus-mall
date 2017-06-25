@@ -64,7 +64,6 @@ function renderProduct () {
     productImagesParent.append(img);
   }
 }
-//TODO: store the imageState. I probably don't need to to store timesClicked and timesShown
 
 //create function to count the times of images shown
 function timesImageShown () {
@@ -181,67 +180,12 @@ generateRandomProduct();
 timesImageShown();
 renderProduct();
 
-//create function to store value of pickList to browser
-// function storePickList (answer) {
-//   if (pickList !== null) {
-//     pickList.push(answer);
-//     var stringifiedPickList = JSON.stringify(pickList);
-//   }
-//   localStorage.setItem('pickList', stringifiedPickList);
-//
-//   var parsedPickList = JSON.parse(stringifiedPickList);
-//   return parsedPickList;
-// }
-//
-// //create function to store value of randomProductShownList to browser
-// function storeRandomProductShownList (randomProductNameList) {
-//   if (randomProductShownList !== null) {
-//     randomProductShownList.push(randomProductNameList);
-//     var stringifiedRandomProductShownList = JSON.stringify(randomProductShownList);
-//   }
-//   localStorage.setItem('randomProductShownList',stringifiedRandomProductShownList );
-//
-//   var parsedRandomProductShownList = JSON.parse(stringifiedRandomProductShownList);
-//   return parsedRandomProductShownList;
-// }
-// //create function to store and update trial
-// function getUpdateTrials (trial ) {
-//   if ( trial !== null) {
-//     var stringifiedTrial = JSON.stringify(trial);
-//   }
-//   localStorage.setItem('trial', stringifiedTrial);
-//   var parsedTrial = JSON.parse(stringifiedTrial);
-//   return parsedTrial;
-// }
-// //create function to store timesClicked
-// function getUpdateTimesClicked (timesClicked ) {
-//   if ( timesClicked !== null) {
-//     var stringifiedTimesClicked = JSON.stringify(timesClicked);
-//   }
-//   localStorage.setItem('timesClicked', stringifiedTimesClicked);
-//   var parsedTimesClicked = JSON.parse(stringifiedTimesClicked);
-//   return parsedTimesClicked;
-// }
-// //create function to store timesShown
-// function getUpdateTimesShown (timesShown ) {
-//   if ( timesShown !== null) {
-//     var stringifiedTimesShown = JSON.stringify(timesShown);
-//   }
-//   localStorage.setItem('timesShown', stringifiedTimesShown);
-//   var parsedTimesShown = JSON.parse(stringifiedTimesShown);
-//   return parsedTimesShown;
-// }
-
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
   if (attempts === maxAttempts) {
     return;
   }
-  // if (attempts) {
-  //   storePickList(answer);
-  //   storeRandomProductShownList (randomProductNameList);
-  //   getUpdateTrials (trial );
-  // }
+
   var answer = event.target.getAttribute('id');
   attempts++;
   trial--;
