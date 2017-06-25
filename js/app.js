@@ -45,7 +45,6 @@ var trialParent = document.getElementById('trial');
 
 //create function render product names and images
 function renderProduct () {
-
   if(attempts) {
     for(var k = 0; k < 3; k ++) {
       productNameParent.removeChild(productNameParent.lastChild);
@@ -53,7 +52,6 @@ function renderProduct () {
     }
     trialParent.removeChild(trialParent.lastChild);
   }
-
   for (var m = 0; m < 3; m ++) {
     var h3 = document.createElement('h3');
     h3.textContent = randomProductNameList[m];
