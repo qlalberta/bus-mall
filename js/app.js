@@ -41,7 +41,7 @@ function generateRandomProduct () {
 var productNameParent = document.getElementById('productName');
 var productImagesParent = document.getElementById('productImages');
 var responseParent = document.getElementById('response');
-var trialParent = document.getElementById('trial');
+var trialElement = document.getElementById('trial');
 
 //create function render product names and images
 function renderProduct () {
@@ -50,7 +50,6 @@ function renderProduct () {
       productNameParent.removeChild(productNameParent.lastChild);
       productImagesParent.removeChild(productImagesParent.lastChild);
     }
-    trialParent.removeChild(trialParent.lastChild);
   }
   for (var m = 0; m < 3; m ++) {
     var h3 = document.createElement('h3');
@@ -91,14 +90,66 @@ function timesImageClicked () {
   }
 }
 
-//create function to render selection results after maximum attempts
-function renderResponse () {
-  var div = document.createElement('div');
-  var ul = document.createElement('ul');
-  trialParent.appendChild(div);
-  responseParent.appendChild(ul);
+//create a function to get trial number
+function getTrial() {
+  var trial = localStorage.getItem('trial');
+  if (trial !== null) {
+    trial = parseInt(trial);
+    return trial;
+  }
+}
+
+function createOrUpdateTrial (value) {
+  value = value.toString();
+  localStorage.setItem('trial', value);
+  var trial = localStorage.getItem('trial');
+  return trial;
+}
+
+// var trial = localStorage.setItem('trial', '25');
+function decreaseTrial () {
+  // value = value.toString;
+  trial = getTrial();
+  trial--;
+  createOrUpdateTrial(trial);
+}
+
+//create a function to store value of pickList in eventListerner
+function getPickList (answer) {
+  if (pickList !== null) {
+    pickList.push(answer);
+    var stringifiedPickList = JSON.stringify(pickList);
+  }
+  localStorage.setItem('pickList', stringifiedPickList);
+
+  var parsedPickList = JSON.parse(stringifiedPickList);
+  return parsedPickList;
+}
+
+//create function to store value of randomProductShownList
+function getRandomProductShownList (randomProductNameList) {
+  if (randomProductShownList !== null) {
+    randomProductShownList.push(randomProductNameList);
+    var stringifiedRandomProductShownList = JSON.stringify(randomProductShownList);
+  }
+  localStorage.setItem('randomProductShownList',stringifiedRandomProductShownList );
+
+  var parsedRandomProductShownList = JSON.parse(stringifiedRandomProductShownList);
+  return parsedRandomProductShownList;
+}
+
+
+//create a function to render remaining attempts
+function renderTrial () {
+  // var trialElement = document.getElementById('trialTime');
   if(attempts < maxAttempts)
-    div.textContent = 'You have ' + trial + ' attmepts left.';
+    trialElement.textContent = getTrial() || 0;
+}
+
+//create a function to render selection results after maximum attempts
+function renderResponse () {
+  var ul = document.createElement('ul');
+  responseParent.appendChild(ul);
   if (attempts == maxAttempts) {
     responseParent.appendChild(ul);
     for (var z = 0; z < 20 ; z++) {
@@ -110,87 +161,85 @@ function renderResponse () {
 }
 
 //create function to display the result in the form of a barChart
-function barChart () {
-  var canvas = document.getElementById('barchart');
-  var ctx = canvas.getContext('2d');
-  // modeled after the Getting Started example in the chartJS docs
-  barChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: productName,
-      datasets: [{
-        label: 'Times shown',
-        backgroundColor: 'rgb(251, 159, 21)',
-        borderColor: 'rgba(17, 18, 17, 0.93)',
-        data: timesShown,
-      },{
-        label: 'Times clicked',
-        backgroundColor: 'rgb(2, 10, 36)',
-        borderColor: 'rgba(17, 18, 17, 0.93)',
-        data: timesClicked,
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
-  });
-}
-
-//display the result in line chart
-function lineChart () {
-  var canvas = document.getElementById('linechart');
-  var ctx = canvas.getContext('2d');
-  // modeled after the Getting Started example in the chartJS docs
-  lineChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: productName,
-      datasets: [{
-        label: 'Times shown',
-        backgroundColor: 'rgb(251, 159, 21)',
-        borderColor: 'rgba(17, 18, 17, 0.93)',
-        data: timesShown,
-      },{
-        label: 'Times clicked',
-        backgroundColor: 'rgb(2, 10, 36)',
-        borderColor: 'rgba(17, 18, 17, 0.93)',
-        data: timesClicked,
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          stacked: true
-        }]
-      }
-    }
-  });
-}
+// function barChart () {
+//   var canvas = document.getElementById('barchart');
+//   var ctx = canvas.getContext('2d');
+//   // modeled after the Getting Started example in the chartJS docs
+//   barChart = new Chart(ctx, {
+//     type: 'bar',
+//     data: {
+//       labels: productName,
+//       datasets: [{
+//         label: 'Times shown',
+//         backgroundColor: 'rgb(251, 159, 21)',
+//         borderColor: 'rgba(17, 18, 17, 0.93)',
+//         data: timesShown,
+//       },{
+//         label: 'Times clicked',
+//         backgroundColor: 'rgb(2, 10, 36)',
+//         borderColor: 'rgba(17, 18, 17, 0.93)',
+//         data: timesClicked,
+//       }]
+//     },
+//     options: {
+//       scales: {
+//         yAxes: [{
+//           ticks: {
+//             beginAtZero: true
+//           }
+//         }]
+//       }
+//     }
+//   });
+// }
+//
+// //display the result in line chart
+// function lineChart () {
+//   var canvas = document.getElementById('linechart');
+//   var ctx = canvas.getContext('2d');
+//   // modeled after the Getting Started example in the chartJS docs
+//   lineChart = new Chart(ctx, {
+//     type: 'line',
+//     data: {
+//       labels: productName,
+//       datasets: [{
+//         label: 'Times shown',
+//         backgroundColor: 'rgb(251, 159, 21)',
+//         borderColor: 'rgba(17, 18, 17, 0.93)',
+//         data: timesShown,
+//       },{
+//         label: 'Times clicked',
+//         backgroundColor: 'rgb(2, 10, 36)',
+//         borderColor: 'rgba(17, 18, 17, 0.93)',
+//         data: timesClicked,
+//       }]
+//     },
+//     options: {
+//       scales: {
+//         yAxes: [{
+//           stacked: true
+//         }]
+//       }
+//     }
+//   });
+// }
 
 //call functions to display the first group of products
 generateRandomProductID();
 generateRandomProduct();
 timesImageShown();
 renderProduct();
+renderTrial();
 
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
   if (attempts === maxAttempts) {
     return;
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> 43a613b2322da520fab48433e88801f7bf17940c
   var answer = event.target.getAttribute('id');
   attempts++;
-  trial--;
+  decreaseTrial();
+  renderTrial();
   pickList.push(answer);
   generateRandomProductID();
   generateRandomProduct();
@@ -198,8 +247,8 @@ productImagesParent.addEventListener('click', function (event) {
   timesImageShown();
   timesImageClicked();
   renderResponse();
-  if (attempts === maxAttempts) {
-    barChart();
-    lineChart();
-  }
+  // if (attempts === maxAttempts) {
+  //   barChart();
+  //   lineChart();
+  // }
 });
