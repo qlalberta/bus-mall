@@ -64,7 +64,6 @@ function renderProduct () {
     productImagesParent.append(img);
   }
 }
-//TODO: store the imageState. I probably don't need to to store timesClicked and timesShown
 
 //create function to count the times of images shown
 function timesImageShown () {
