@@ -8,14 +8,13 @@ var randomImagePathList = [];
 var randomProductNameList = [];
 var previousIndexList = [];
 var indexList = [];
-var attempts = 0;
 var maxAttempts = 25;
-var trial = 25;
 var numberOfImage = 78;
 var pickList = [];
 var randomProductShownList = [];
 var timesShown = new Array(20).fill(0);
 var timesClicked = new Array(20).fill(0);
+var isInit = 0;
 
 //generate random numbers without duplicates
 function generateRandomProductID () {
@@ -41,17 +40,17 @@ function generateRandomProduct () {
 var productNameParent = document.getElementById('productName');
 var productImagesParent = document.getElementById('productImages');
 var responseParent = document.getElementById('response');
-var trialParent = document.getElementById('trial');
+var trialElement = document.getElementById('trial');
 
 //create function render product names and images
 function renderProduct () {
-  if(attempts) {
+  if(isInit != 0) {
     for(var k = 0; k < 3; k ++) {
       productNameParent.removeChild(productNameParent.lastChild);
       productImagesParent.removeChild(productImagesParent.lastChild);
     }
-    trialParent.removeChild(trialParent.lastChild);
   }
+  isInit = 1;
   for (var m = 0; m < 3; m ++) {
     var h3 = document.createElement('h3');
     h3.textContent = randomProductNameList[m];
@@ -62,7 +61,6 @@ function renderProduct () {
     productImagesParent.append(img);
   }
 }
-//TODO: store the imageState. I probably don't need to to store timesClicked and timesShown
 
 //create function to count the times of images shown
 function timesImageShown () {
@@ -91,14 +89,66 @@ function timesImageClicked () {
   }
 }
 
-//create function to render selection results after maximum attempts
+//create functions to get, update, store and clear attmepts
+function getAttempts() {
+  var attempts = localStorage.getItem('attempts');
+  if(attempts == null) {
+    return 0;
+  } else {
+    return parseInt(attempts);
+  }
+}
+
+function createOrUpdateAttempts (value) {
+  value = parseInt(value);
+  localStorage.setItem('attempts', value);
+  var attempts = localStorage.getItem('attempts');
+  return attempts;
+}
+
+function incrementAttempts () {
+  var attempts = getAttempts();
+  attempts++;
+  createOrUpdateAttempts(attempts);
+}
+
+//create a function to store value of pickList in eventListerner
+function getPickList (answer) {
+  if (pickList !== null) {
+    pickList.push(answer);
+    var stringifiedPickList = JSON.stringify(pickList);
+  }
+  localStorage.setItem('pickList', stringifiedPickList);
+
+  var parsedPickList = JSON.parse(stringifiedPickList);
+  return parsedPickList;
+}
+
+//create function to store value of randomProductShownList
+function getRandomProductShownList (randomProductNameList) {
+  if (randomProductShownList !== null) {
+    randomProductShownList.concat(randomProductNameList);
+    var stringifiedRandomProductShownList = JSON.stringify(randomProductShownList);
+  }
+  localStorage.setItem('randomProductShownList',stringifiedRandomProductShownList );
+
+  var parsedRandomProductShownList = JSON.parse(stringifiedRandomProductShownList);
+  return parsedRandomProductShownList;
+}
+
+//create a function to render remaining attempts
+function renderAttempts () {
+  var attempts = getAttempts();
+  if(attempts < maxAttempts){
+    trialElement.textContent = maxAttempts - getAttempts();
+  }
+}
+
+//create a function to render selection results after maximum attempts
 function renderResponse () {
-  var div = document.createElement('div');
   var ul = document.createElement('ul');
-  trialParent.appendChild(div);
   responseParent.appendChild(ul);
-  if(attempts < maxAttempts)
-    div.textContent = 'You have ' + trial + ' attmepts left.';
+  var attempts = getAttempts();
   if (attempts == maxAttempts) {
     responseParent.appendChild(ul);
     for (var z = 0; z < 20 ; z++) {
@@ -109,7 +159,7 @@ function renderResponse () {
   }
 }
 
-//create function to display the result in the form of a barChart
+// create function to display the result in the form of a barChart
 function barChart () {
   var canvas = document.getElementById('barchart');
   var ctx = canvas.getContext('2d');
@@ -178,24 +228,30 @@ generateRandomProductID();
 generateRandomProduct();
 timesImageShown();
 renderProduct();
+renderAttempts();
 
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
-  if (attempts === maxAttempts) {
+  var attempts = getAttempts();
+  if (attempts == maxAttempts) {
     return;
   }
   var answer = event.target.getAttribute('id');
-  attempts++;
-  trial--;
-  pickList.push(answer);
+  incrementAttempts();
+  getPickList (answer);
+  getRandomProductShownList (randomProductNameList);
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
+  renderAttempts();
   timesImageShown();
   timesImageClicked();
   renderResponse();
-  if (attempts === maxAttempts) {
+  if (getAttempts() === maxAttempts) {
     barChart();
     lineChart();
+  }
+  if (getAttempts() === maxAttempts) {
+    renderAttempts();
   }
 });
