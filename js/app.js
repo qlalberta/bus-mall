@@ -61,7 +61,6 @@ function renderProduct () {
     productImagesParent.append(img);
   }
 }
-//TODO: store the imageState. I probably don't need to to store timesClicked and timesShown
 
 //create function to count the times of images shown
 function timesImageShown () {
@@ -90,32 +89,27 @@ function timesImageClicked () {
   }
 }
 
-//create a function to get trial number
-function getTrial() {
-  var trial = localStorage.getItem('trial');
-  if(trial == null) {
+//create functions to get, update, store and clear attmepts
+function getAttempts() {
+  var attempts = localStorage.getItem('attempts');
+  if(attempts == null) {
     return 0;
   } else {
-    return parseInt(trial);
+    return parseInt(attempts);
   }
 }
 
-function createOrUpdateTrial (value) {
+function createOrUpdateAttempts (value) {
   value = parseInt(value);
-  localStorage.setItem('trial', value);
-  var trial = localStorage.getItem('trial');
-  return trial;
+  localStorage.setItem('attempts', value);
+  var attempts = localStorage.getItem('attempts');
+  return attempts;
 }
 
-function incrementTrial () {
-  var trial = getTrial();
-  trial++;
-  createOrUpdateTrial(trial);
-}
-
-function deleteTrial() {
-  localStorage.removeItem('trial');
-  return null;
+function incrementAttempts () {
+  var attempts = getAttempts();
+  attempts++;
+  createOrUpdateAttempts(attempts);
 }
 
 //create a function to store value of pickList in eventListerner
@@ -133,7 +127,7 @@ function getPickList (answer) {
 //create function to store value of randomProductShownList
 function getRandomProductShownList (randomProductNameList) {
   if (randomProductShownList !== null) {
-    randomProductShownList.push(randomProductNameList);
+    randomProductShownList.concat(randomProductNameList);
     var stringifiedRandomProductShownList = JSON.stringify(randomProductShownList);
   }
   localStorage.setItem('randomProductShownList',stringifiedRandomProductShownList );
@@ -142,20 +136,19 @@ function getRandomProductShownList (randomProductNameList) {
   return parsedRandomProductShownList;
 }
 
-
 //create a function to render remaining attempts
-function renderTrial () {
-  // var trialElement = document.getElementById('trialTime');
-  var attempts = getTrial();
-  if(attempts < maxAttempts)
-    trialElement.textContent = getTrial();
+function renderAttempts () {
+  var attempts = getAttempts();
+  if(attempts < maxAttempts){
+    trialElement.textContent = maxAttempts - getAttempts();
+  }
 }
 
 //create a function to render selection results after maximum attempts
 function renderResponse () {
   var ul = document.createElement('ul');
   responseParent.appendChild(ul);
-  var attempts = getTrial();
+  var attempts = getAttempts();
   if (attempts == maxAttempts) {
     responseParent.appendChild(ul);
     for (var z = 0; z < 20 ; z++) {
@@ -166,38 +159,99 @@ function renderResponse () {
   }
 }
 
+// create function to display the result in the form of a barChart
+function barChart () {
+  var canvas = document.getElementById('barchart');
+  var ctx = canvas.getContext('2d');
+  // modeled after the Getting Started example in the chartJS docs
+  barChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: productName,
+      datasets: [{
+        label: 'Times shown',
+        backgroundColor: 'rgb(251, 159, 21)',
+        borderColor: 'rgba(17, 18, 17, 0.93)',
+        data: timesShown,
+      },{
+        label: 'Times clicked',
+        backgroundColor: 'rgb(2, 10, 36)',
+        borderColor: 'rgba(17, 18, 17, 0.93)',
+        data: timesClicked,
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+}
+
+//display the result in line chart
+function lineChart () {
+  var canvas = document.getElementById('linechart');
+  var ctx = canvas.getContext('2d');
+  // modeled after the Getting Started example in the chartJS docs
+  lineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: productName,
+      datasets: [{
+        label: 'Times shown',
+        backgroundColor: 'rgb(251, 159, 21)',
+        borderColor: 'rgba(17, 18, 17, 0.93)',
+        data: timesShown,
+      },{
+        label: 'Times clicked',
+        backgroundColor: 'rgb(2, 10, 36)',
+        borderColor: 'rgba(17, 18, 17, 0.93)',
+        data: timesClicked,
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          stacked: true
+        }]
+      }
+    }
+  });
+}
+
 //call functions to display the first group of products
 generateRandomProductID();
 generateRandomProduct();
 timesImageShown();
 renderProduct();
-renderTrial();
+renderAttempts();
 
 // initialze the eventListerner and call functions to display counts and the chart
 productImagesParent.addEventListener('click', function (event) {
-  var attempts = getTrial();
-  console.log('attempts '  + attempts);
-  console.log('attemptsType' + typeof(attempts));
-  if (attempts === maxAttempts) {
-    console.log('end of the road');
+  var attempts = getAttempts();
+  if (attempts == maxAttempts) {
     return;
   }
   var answer = event.target.getAttribute('id');
-  incrementTrial();
-  pickList.push(answer);
+  incrementAttempts();
+  getPickList (answer);
+  getRandomProductShownList (randomProductNameList);
   generateRandomProductID();
   generateRandomProduct();
   renderProduct();
-  renderTrial();
+  renderAttempts();
   timesImageShown();
   timesImageClicked();
   renderResponse();
-  // if (attempts === maxAttempts) {
-  //   barChart();
-  //   lineChart();
-  // }
-  if (attempts === maxAttempts) {
-    renderTrial();
-    deleteTrial();
+  if (getAttempts() === maxAttempts) {
+    barChart();
+    lineChart();
+  }
+  if (getAttempts() === maxAttempts) {
+    renderAttempts();
   }
 });
